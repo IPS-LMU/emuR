@@ -791,12 +791,14 @@ remove_attributeDefinition <- function(dbName,
 ##' specified in this array, this is a simple way of assuring that a level 
 ##' has a consistent label set. For more information 
 ##' on the structural elements of an emuDB see \code{vignette(emuDB)}.
+##' Note that defining legal labels for an attributeDefinition does not imply that the 
+##' existing labels are checked for being 'legal' in the emuDB.
 ##' 
 ##' @param dbName name of loaded emuDB
 ##' @param levelName name of level
-##' @param attributeDefinitionName name of attributeDefinition
+##' @param attributeDefinitionName name of attributeDefinition (can be and often is the levelName)
 ##' @param legalLabels character vector of labels
-##' @param dbUUID optional UUID of loaded emuDB
+##' @param dbUUID optional UUID of loaded emuDB, in case the dbName is ambiguous
 ##' @keywords emuDB database schema Emu
 ##' @name SetGetRemoveLegalLabels
 ##' @examples 
@@ -914,6 +916,10 @@ remove_legalLabels <- function(dbName,
 ##' category of nasals to be able reference them 
 ##' as "nasals" in a \code{\link{query}}. For more information 
 ##' on the structural elements of an emuDB see \code{vignette(emuDB)}.
+##' In theory you could use a labelGroupName as a label instance within the
+##' level, but since this could lead to serious confusion, you'll better avoid doing that.
+##' Do not confuse a labelGroup with legal labels: the labelGroup 
+##' used to be called 'legal labels' in the legacy Emu system.  
 ##' 
 ##' 
 ##' @param dbName name of loaded emuDB
@@ -921,7 +927,7 @@ remove_legalLabels <- function(dbName,
 ##' @param attributeDefinitionName name of attributeDefinition
 ##' @param labelGroupName name of label group
 ##' @param labelGroupValues character vector of labels
-##' @param dbUUID optional UUID of loaded emuDB
+##' @param dbUUID optional UUID of loaded emuDB, in case the dbName is ambiguous
 ##' @keywords emuDB database schema Emu
 ##' @seealso add_labelGroup
 ##' @name AddListRemoveAttrDefLabelGroup
@@ -943,7 +949,7 @@ remove_legalLabels <- function(dbName,
 ##'                       labelGroupValues = sampaNasals)
 ##' 
 ##' # query the labelGroup
-##' query("ae", "Phonetic=sampaNasals")
+##' query("ae", "Phonetic==sampaNasals")
 ##' 
 ##' 
 ##' # list attribute definition label groups
@@ -1072,20 +1078,21 @@ remove_attrDefLabelGroup <- function(dbName,
 ##' }
 ##' 
 ##' For all link types the rule applies that no links are allowed to cross any other links.
+##' A linkDefinition cannot be removed, if there are links present in the emuDB.
 ##' 
 ##' @param dbName name of emuDB
 ##' @param type type of linkDefinition (either \code{"ONE_TO_MANY"}, \code{"MANY_TO_MANY"} or \code{"ONE_TO_ONE"})
 ##' @param superlevelName name of super-level of linkDefinition
 ##' @param sublevelName name of sub-level of linkDefinition
-##' @param dbUUID optional UUID of emuDB
+##' @param dbUUID optional UUID of emuDB, in case the dbName is ambiguous
 ##' @name AddListRemoveLinkDefinition
 ##' @examples 
 ##' \dontrun{
 ##' 
 ##' ##################################
-##' # prerequisite: loaded emuDB that was converted
-##' # using the TextGridCollection function called "myTGcolDB"
-##' # (see ?load_emuDB for more information)
+##' # prerequisite: loaded emuDB called "myTGcolDB" that was converted
+##' # using the convert_TextGridCollection_to_emuDB function
+##' # (see ?create_emuRdemoData and ?convert_TextGridCollection_to_emuDB for more information)
 ##' 
 ##' # add link definition from super-level "Phoneme"
 ##' # to sub-level "Phonetic" of type "ONE_TO_MANY"
@@ -1223,7 +1230,7 @@ remove_linkDefinition <- function(dbName,
 
 ##' Add / List / Remove ssffTrackDefinition to / from / of emuDB
 ##' 
-##' Add / List / Remove ssffTrackDefinitions to / from / of emuDB. 
+##' Add / List / Remove ssffTrackDefinition to / from / of emuDB. 
 ##' An ssffTrack (often simply referred to as a track) references 
 ##' data that is stored in the Simple Signal File Format (SSFF) 
 ##' in the according bundle folders. The two most common types of data are:
@@ -1235,15 +1242,18 @@ remove_linkDefinition <- function(dbName,
 ##' such as formant values and their bandwidths or the short-term Root Mean Square amplitude of the signal.}
 ##' }
 ##' For more information on the structural elements of an emuDB see \code{vignette(emuDB)}.
+##'
 ##' @param dbName name of emuDB
-##' @param name name of ssffTrackDefinitions
-##' @param columnName columnName of ssffTrackDefinitions.
-##' If the \code{onTheFlyFunctionName} parameter is set and this one isn't the
+##' @param name name of ssffTrackDefinition
+##' @param columnName columnName of ssffTrackDefinition.
+##' If the \code{onTheFlyFunctionName} parameter is set and columnName isn't, the
 ##' \code{columnName} will default to the first entry in \code{wrasspOutputInfos[[onTheFlyFunctionName]]$tracks}.
 ##' @param fileExtension fileExtension of ssffTrackDefinitions.
-##' If the \code{onTheFlyFunctionName} parameter is set and this one isn't the
+##' If the \code{onTheFlyFunctionName} parameter is set and fileExtension isn't, the
 ##' \code{fileExtension} will default to the first entry in \code{wrasspOutputInfos[[onTheFlyFunctionName]]$ext}.
-##' @param onTheFlyFunctionName name of wrassp function to do on-the-fly calculation. See \code{names(wrasspOutputInfos)}
+##' @param onTheFlyFunctionName name of wrassp function to do on-the-fly calculation. If set to the name of a wrassp 
+##' signal processing function, not only the emuDB schema is extended by the ssffTrackDefintion but also 
+##' the track istself is calculated from the signal file and stored in the emuDB. See \code{names(wrasspOutputInfos)}
 ##' for a list of all the signal processing functions provided by the wrassp package.
 ##' @param onTheFlyParams a list of parameters that will be given to the function 
 ##' passed in by the onTheFlyFunctionName parameter. This list can easily be 
@@ -1254,7 +1264,7 @@ remove_linkDefinition <- function(dbName,
 ##' @param deleteFiles delete files that belong to ssffTrackDefinition on removal
 ##' @param verbose Show progress bars and further information
 ##' @param interactive ask user for confirmation
-##' @param dbUUID optional UUID of emuDB
+##' @param dbUUID optional UUID of emuDB, in case dbName is ambiguous
 ##' @seealso wrasspOutputInfos
 ##' @name AddListRemoveSsffTrackDefinition
 ##' @examples 
@@ -1265,7 +1275,7 @@ remove_linkDefinition <- function(dbName,
 ##' # (see ?load_emuDB for more information)
 ##' 
 ##' # add ssff track definition to "ae" emuDB
-##' # calculating the according SSFF files on-the-fly
+##' # calculating the according SSFF files .zcr on-the-fly
 ##' # using the wrassp function "zcrana" (zero-crossing-rate analysis)
 ##' add_ssffTrackDefinition(dbName = "ae",
 ##'                         name = "ZCRtrack",
@@ -1285,7 +1295,7 @@ remove_linkDefinition <- function(dbName,
 ##' # list ssff track definitions for "ae" emuDB
 ##' list_ssffTrackDefinitions(dbName = "ae")
 ##' 
-##' # remove newly added ssff track definition
+##' # remove newly added ssff track definition, but not the .zrc files in the emuDB
 ##' remove_ssffTrackDefinition <- function(dbName = "ae", 
 ##'                                        name = "ZCRtrack")
 ##' 
