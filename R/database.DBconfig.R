@@ -485,12 +485,14 @@ get.levelDefinition <- function(DBconfig, name){
 ##' type "EVENT" or of the type "SEGMENT" but are timeless 
 ##' if they are of the type "ITEM". For more information 
 ##' on the structural elements of an emuDB see \code{vignette(emuDB)}.
+##' Note that a level cannot be removed, if it contains instances of annotation items
+##' or if it is linked to another level.
 ##' 
 ##' @param dbName name of loaded emuDB
 ##' @param name name of level definition
 ##' @param type type of level definition
 ##' @param store changes to file system
-##' @param dbUUID optional UUID of loaded emuDB
+##' @param dbUUID optional UUID of loaded emuDB, in case dbName is ambiguous
 ##' @keywords emuDB database schema Emu
 ##' @name AddListRemoveLevelDefinitions
 ##' @examples 
@@ -627,12 +629,14 @@ remove_levelDefinition<-function(dbName,name,dbUUID=NULL){
 ##' default attribute definition that has the same name as the level definition
 ##' (automatically created by \code{\link{add_levelDefinition}}). For more 
 ##' information on the structural elements of an emuDB see \code{vignette(emuDB)}.
+##' Note that as with level definitions, an attribute definition to a level cannot be removed,
+##' if it contains labels in the emuDB.
 ##' 
 ##' @param dbName name of loaded emuDB
 ##' @param levelName name of level
 ##' @param name name of attributeDefinition
 ##' @param type type of attributeDefinition (currently only "STRING")
-##' @param dbUUID optional UUID of loaded emuDB
+##' @param dbUUID optional UUID of loaded emuDB, in case the dbName is ambiguous
 ##' @keywords emuDB database DBconfig Emu 
 ##' @name AddListRemoveAttributeDefinitions
 ##' @examples 
@@ -1445,14 +1449,17 @@ remove_ssffTrackDefinition <- function(dbName, name,
 ##' \code{\link{query}}. A common example would be to
 ##' add a label group for something like the phonetic
 ##' category of nasals to be able to reference them 
-##' as "nasals" in a \code{\link{query}}. For 
-##' more information on the structural elements of an emuDB 
+##' as "nasals" in a \code{\link{query}}. 
+##' In theory you could use the same label group name as global label group
+##' and a attribute definition specific label group and even a label instance within the
+##' level, but since this could lead to serious confusion, you'll better avoid doing that. 
+##' For more information on the structural elements of an emuDB 
 ##' see \code{vignette{emuDB}}.
 ##' 
 ##' @param dbName name of loaded emuDB
 ##' @param name name of label group
 ##' @param values character vector of labels
-##' @param dbUUID optional UUID of loaded emuDB
+##' @param dbUUID optional UUID of loaded emuDB, in case the dbName is ambiguous
 ##' @keywords emuDB database schema Emu
 ##' @seealso add_attrDefLabelGroup
 ##' @name AddListRemoveLabelGroup
