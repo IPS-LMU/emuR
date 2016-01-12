@@ -10,7 +10,7 @@ create_emuDB(name, targetDir, mediaFileExtension = "wav", purge = TRUE,
 \arguments{
 \item{name}{of new emuDB}
 
-\item{targetDir}{target directory in which to store the emuDB}
+\item{targetDir}{target directory to store the emuDB to}
 
 \item{mediaFileExtension}{defines mediaFileExtention (NOTE: currently only 
 'wav' (the default) is supported by all components of EMU)}
@@ -22,7 +22,10 @@ create_emuDB(name, targetDir, mediaFileExtension = "wav", purge = TRUE,
 \item{verbose}{display infos & show progress bar}
 }
 \description{
-creates an empty emuDB in the target directory specified
+Creates an empty emuDB in the target directory specified
+}
+\details{
+Creates a new directory [name]_emuDB in targetDir. By default the emuDB is created in the R session, written to the filesystem and then purged from the R session.
 }
 \author{
 Klaus Jaensch
