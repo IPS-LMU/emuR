@@ -21,8 +21,8 @@ get_signalCanvasesOrder(dbName, perspectiveName, dbUUID = NULL)
 }
 \description{
 Set / Get signalCanvasesOrder array that specifies which signals are 
-displayed in the according perspective by the EMU-webApp. A entry in this character vector 
-refers to either the name of a ssffTrackDefinition or a predefined string: \code{"OSCI"} which 
+displayed in the according perspective by the EMU-webApp. An entry in this character vector 
+refers to either the name of an ssffTrackDefinition or a predefined string: \code{"OSCI"} which 
 represents the oscillogram or \code{"SPEC"} which represents the 
 spectrogram. For more information on the structural elements of an emuDB 
 see \code{vignette{emuDB}}.

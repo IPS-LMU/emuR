@@ -20,10 +20,12 @@ get_levelCanvasesOrder(dbName, perspectiveName, dbUUID = NULL)
 \item{dbUUID}{optional UUID of loaded emuDB}
 }
 \description{
-Set / Get level canvases order of emuDB. Level canvases refer to levels of 
+Set / Get which levels of an emuDB to display as level canvases (in a 
+given perspective of the EMU-webApp),
+and in what order. Level canvases refer to levels of 
 the type "SEGMENT" or "EVENT" that are displayed by the EMU-webApp. Levels 
-of type "ITEM" can always be displayed using the show hierarchy modal of the
-web application but may not be displayed as level canvases. 
+of type "ITEM" can always be displayed using the hierarchy view of the
+web application but can not be displayed as level canvases.
 For more information on the structural elements of an emuDB 
 see \code{vignette{emuDB}}.
 }
