@@ -4,8 +4,8 @@
 ##' proportionally between two times. It is a subsidiary function of dplot()
 ##' 
 ##' 
-##' @aliases dextract dextract.sub
-##' @param dataset A trackdata object
+##' @aliases dextract 
+##' @param track A trackdata object
 ##' @param start A single valued numeric vector corresponding to a proportional
 ##' time between zero (the onset of the trackdata) and one (the offset of the
 ##' trackdata).
@@ -36,8 +36,8 @@
 ##' fzero50 = dextract(fzero, 0.5)
 ##' 
 ##' 
-##' @export dextract
-dextract <- function(dataset, start, end) {
+##' @export
+dextract <- function(track, start, end) {
   if((start < 0) | (start > 1)) {
     stop("proportional duration must be between 0 and 1")
   }
@@ -51,30 +51,30 @@ dextract <- function(dataset, start, end) {
   }
   
   if(missing(end)) {
-    leftin <- dataset$index[, 1]
-    rightin <- dataset$index[, 2]
+    leftin <- track$index[, 1]
+    rightin <- track$index[, 2]
     scalein <- round((rightin - leftin) * start)
     outin <- leftin + scalein
-    if(is.matrix(dataset$data))
-      return(dataset$data[outin,  ])
-    else return(dataset$data[outin])
+    if(is.matrix(track$data))
+      return(track$data[outin,  ])
+    else return(track$data[outin])
   } else {
-    dapply(dataset, dextract.sub, start, end)
+    dapply(track, dextract.sub, start, end)
   }
 }
 
 
-##' @export
-"dextract.sub" <- function (data, ftime, start, end) 
+#' @inheritParams dextract
+dextract.sub <- function (track, ftime, start, end) 
 {
 # helper function for use via dapply, returns a new
 # trackdata element cut at start/end proportions
-  len <- nrow(data)
+  len <- nrow(track)
   start <- floor(start * (len - 1) + 1)
   end <- ceiling(end * (len - 1) + 1)
   
-  newdata <- data[start:end, ]
+  newtrack <- track[start:end, ]
   times <- seq(ftime[1], ftime[2], length = len)
   newftime <- times[c(start, end)]
-  return(list(data = newdata, ftime = newftime))
+  return(list(track = newtrack, ftime = newftime))
 }
