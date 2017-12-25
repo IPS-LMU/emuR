@@ -11,7 +11,8 @@
 ##' @author Jonathan Harrington
 ##' @keywords math
 ##' @export ddiff
-"ddiff"<- function(dataset, n = 1, smoothing = TRUE)
+##' 
+ddiff <- function(dataset, n = 1, smoothing = TRUE)
 {
   ## differentiates a list, as returned by track, to the nth
   ## order, readjusting the index and ftime values each time
@@ -26,17 +27,19 @@
 }
 
 
-##' @export 
+
+#' A function to be called by ddiff to do differentiation of a data track.
+#'
+#' @param data a data matrix
+#' @param ftime a start-end pair
+#' @param n number of times to differentiate
+#'
+#' @return a list of \code{data} values differentiated and \code{ftime} values adjusted accordingly. Values in \code{data} that are returned are per millisecond
+#'
+#' @examples
 ddiff.sub <- function(data, ftime, n)
 {
-  ## a function to be called by dapply
-  ## data: a data matrix
-  ## ftime: a start-end pair
-  ## n: number of times to differentiate
-  ## smoothing: if T, apply smooth to data too
-  ## returns: a list of $data values differentiated 
-  ## and $ftime values adjusted accordingly
-  ## values in $data that are returned are per millisecond
+
   if(is.matrix(data)) lval <- nrow(data) else lval <- length(data
   )
   if(lval < 1) stop("not enough data points in ddiff")	
