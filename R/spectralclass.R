@@ -1,10 +1,10 @@
 ##' Function to test whether the object is of class "spectral"
 ##' 
-##' Returns T or F depending on whether the object is of class "spectral"
+##' Returns \code{TRUE} or \code{FALSE} depending on whether the object is of class "spectral"
 ##' 
 ##' 
 ##' @param dat An R object
-##' @return A single element logical vector: T or F
+##' @return A value, \code{TRUE} or \code{FALSE}
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{as.spectral}}
 ##' @keywords attribute
@@ -20,22 +20,13 @@
 ##' 
 ##' 
 ##' @export is.spectral
-"is.spectral" <- function(dat)
+is.spectral <- function(dat)
 {
   if(!is.trackdata(dat))
-    return(any(class(dat) %in% "spectral"))
+    return("spectral" %in% class(dat))
   else
-    return(any(class(dat$data) %in% "spectral"))
+    return("spectral" %in% class(dat$data))
 }
-
-
-
-
-
-
-
-
-
 
 
 ##' Function to convert an object into an object of class 'spectral'.
