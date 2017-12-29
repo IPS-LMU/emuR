@@ -71,7 +71,6 @@ print.trackdata <- function(x, ...)
 }
 
 
-
 ##' A summary function for trackdata objects
 ##' 
 ##' The summary function displays the number of segments for which track values are present in the \code{trackdata} object, the number of dimensions and the average number of samples in the per segment tracks. 
@@ -161,14 +160,6 @@ summary.trackdata <- function(object, ...)
 }
 
 
-
-
-
-
-
-
-
- 
 ##' Test whether an object is an Emu trackdata object
 ##' 
 ##' 
@@ -196,15 +187,9 @@ is.trackdata <- function (object)
 ##' segments on the same plot as a function of time: for this use dplot().
 ##' 
 ##' @param x A trackdata object.
-##' @param timestart A single valued numeric vector for setting the time at
-##' which the trackdata should start. Defaults to NULL which means that the
-##' start time is taken from start(trackdata), i.e. the time at which the
-##' trackdata object starts.
-##' @param xlim A numeric vector of two values for specifying the time interval
-##' over which the trackdata is to be plotted. Defaults to NULL which means
-##' that the trackdata object is plotted between between the start time of the
-##' first segment and the end time of the last segment.
-##' @param ylim Specify a yaxis range.
+##' @param timestart Track data with time indices (\code{x$ftime}) below this value will not be plotted. If \code{NULL} (the default), the start time will be the start of the segment, as indicated by the trackdata object.
+##' @param xlim The time range \code{c(min,max)} to be included in the plot.
+##' @param ylim The y axis range \code{c(min,max)} to be presented in the plot.
 ##' @param labels A character vector the same length as the number of segments
 ##' in the trackdata object. Each label is plotted at side = 3 on the plotted
 ##' at the temporal midpoint of each segment in the trackdata object. Defaults
@@ -252,13 +237,11 @@ is.trackdata <- function (object)
 ##' 
 ##' # F1 and F2 of six vowels with labels, separate windows
 ##' par(mfrow=c(2,3))
-##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", 
-##' xlab="Time (ms)", type="b", ylim=c(300, 2400))
+##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", xlab="Time (ms)", type="b", ylim=c(300, 2400))
 ##' 
 ##' # As above, timestart set to zero, colour set to blue, different plotting
 ##' # symbols for the two tracks
-##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", 
-##' xlab="Time (ms)", type="b", col="blue", pch=c(1,2),  ylim=c(300, 2400), timestart=0)
+##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", xlab="Time (ms)", type="b", col="blue", pch=c(1,2),  ylim=c(300, 2400), timestart=0)
 ##' 
 ##' # RMS energy for the utterance 'just relax said Coutts'
 ##'  plot(coutts.rms, type="l")
@@ -324,8 +307,6 @@ plot.trackdata <- function (x, timestart = NULL, xlim = NULL,
     if(length(pch)!=ncol(trackdata))
       pch <- rep(pch[1], ncol(trackdata))
   }
-  
-  
   n <- nrow(trackdata)
   if (!is.null(xlim)) 
     labels <- NULL
