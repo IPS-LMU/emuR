@@ -1,9 +1,9 @@
 ##' Function to test whether the object is of class "spectral"
 ##' 
-##' Returns \code{TRUE} or \code{FALSE} depending on whether the object is of class "spectral"
+##' Returns \code{TRUE} or \code{FALSE} depending on whether the object is of class "spectral".
 ##' 
 ##' 
-##' @param dat An R object
+##' @param obj An R object
 ##' @return A value, \code{TRUE} or \code{FALSE}
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{as.spectral}}
@@ -19,11 +19,11 @@
 ##' 
 ##' 
 ##' 
-##' @export is.spectral
-is.spectral <- function(dat)
+##' @export 
+is.spectral <- function(obj)
 {
 #  if(!is.trackdata(dat))
-    return("spectral" %in% class(dat) && !is.null(attr(dat,"fs")))
+    return("spectral" %in% class(obj) && !is.null(attr(obj,"fs")))
 #  else
 #    return("spectral" %in% class(dat$data) && !is.null(attr(dat,"fs")))
 }
@@ -32,13 +32,14 @@ is.spectral <- function(dat)
 ##' Converts a matrix into an object of class 'spectral'.
 ##' 
 ##' 
-##' The supplied matrix is assumed to have one row per segment, and one column per sampling frequency. The user may specify either a sampling frequency for the spectral object in the \code{fs} argument (a single numeric value) or a description of the frequency at which each columns' values were obtained (a vector of numbers as long as the number of columns in the matrix).
+##' The supplied matrix is assumed to have one row per segment, and one column per sampling frequency. The user may specify either a sampling frequency for the spectral object in the \code{fs} argument (a single numeric value) or a vector of numbers equl in length to the number of columns in \code{mat}. 
 ##' 
 ##' @export
 ##' 
 ##' @param mat A matrix object
 ##' @param fs Either a single element numeric vector, or a numeric vector of
-##' the same length as the number of columns in \code{mat}. 
+##' the same length as the number of columns in \code{mat}.
+##' @param single.segment This argument only matters if an array/vector (one dimensional matrix) is supplied to the function. If \code{single.segment=TRUE} (the default), it will be assumed that the spectral data contained in the vector was obtained from a single segment, and the spectral object will then have one row and as many columns as the length of the vector. If \code{single.segment=FALSE} the vector will instead be converted into a 1 column matrix, which is essentially a 1 dimensional spectral result from each segment. 
 ##' @return An object of class 'spectral' with values from each sample frequency in columns.
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{is.spectral}} \code{\link{plot.spectral}}
@@ -51,7 +52,7 @@ is.spectral <- function(dat)
 ##' as.spectral(mat)
 
 
-as.spectral.matrix <- function(mat, fs=NULL)
+as.spectral.matrix <- function(mat, fs=NULL,single.segment=TRUE)
 {
   if (!is.matrix(mat)){
     stop("The supplied object is not a matrix.")
@@ -61,6 +62,9 @@ as.spectral.matrix <- function(mat, fs=NULL)
     return(mat)
   }
   N <- ncol(mat)
+  if(N == 1 && single.segment){
+    mat <- t(mat)
+  }
   if(is.null(fs))
     fs <- 0:(ncol(mat)-1)
   else{
@@ -75,6 +79,7 @@ as.spectral.matrix <- function(mat, fs=NULL)
   
   return(mat)
 }
+
 
 ##' Converts a trackdata object into an object of class 'spectral'.
 ##' 
