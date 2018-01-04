@@ -27,7 +27,7 @@
 ##' \dontrun{
 ##' 
 ##' ##################################
-##' # Create the demo databases and loed 'ae' 
+##' # Create the demo databases and load 'ae' 
 ##' # (see ?load_emuDB for more information)
 ##' create_emuRdemoData()
 ##' ae <- load_emuDB(file.path(tempdir(),"emuR_demoData","ae_emuDB"))
