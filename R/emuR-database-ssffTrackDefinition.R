@@ -88,7 +88,7 @@
 ##' 
 NULL
 
-##' @rdname AddListRemoveSsffTrackDefinition
+##' @rdname ssffTrackDefinition
 ##' @export
 add_ssffTrackDefinition <- function(emuDBhandle, name,
                                     columnName = NULL, fileExtension = NULL, 
@@ -179,7 +179,7 @@ add_ssffTrackDefinition <- function(emuDBhandle, name,
   }
 }
 
-##' @rdname AddListRemoveSsffTrackDefinition
+##' @rdname ssffTrackDefinition
 ##' @export
 list_ssffTrackDefinitions <- function(emuDBhandle){
   dbConfig = load_DBconfig(emuDBhandle)
@@ -188,7 +188,7 @@ list_ssffTrackDefinitions <- function(emuDBhandle){
 }
 
 
-##' @rdname AddListRemoveSsffTrackDefinition
+##' @rdname ssffTrackDefinition
 ##' @export
 remove_ssffTrackDefinition <- function(emuDBhandle, name, 
                                        deleteFiles = FALSE){
