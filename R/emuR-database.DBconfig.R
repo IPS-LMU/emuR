@@ -566,128 +566,6 @@ remove_attributeDefinition <- function(emuDBhandle,
 }
 
 ###################################################
-# CRUD operations for legalLabels
-
-##' Set / Get / Remove legal labels of attributeDefinition of emuDB
-##' 
-##' Set / Get / Remove legal labels of a specific attributeDefinition of a emuDB. 
-##' The legal labels are a character vector of strings
-##' that specifies the labels that are legal (i.e. allowed / valid) for the given attribute. 
-##' As the EMU-webApp won't allow the annotator to enter any labels that are not 
-##' specified in this array, this is a simple way of assuring that a level 
-##' has a consistent label set. For more information 
-##' on the structural elements of an emuDB see \code{vignette(emuDB)}.
-##' Note that defining legal labels for an attributeDefinition does not imply that the 
-##' existing labels are checked for being 'legal' in the emuDB.
-##' 
-##' @param emuDBhandle emuDB handle as returned by \code{\link{load_emuDB}}
-##' @param levelName name of level
-##' @param attributeDefinitionName name of attributeDefinition (can be and often is the level name)
-##' @param legalLabels character vector of labels
-##' @keywords emuDB database schema Emu
-##' @name SetGetRemoveLegalLabels
-##' @examples 
-##' \dontrun{
-##' 
-##' ##################################
-##' # prerequisite: loaded ae emuDB 
-##' # (see ?load_emuDB for more information)
-##' 
-##' legalPhoneticLabels = c("V", "m", "N", "s", "t", "H", "@:", "f", "r", 
-##'                         "E", "n", "z", "S", "i:", "w", "@", "k", "I", "d", 
-##'                         "db", "j", "u:", "dH", "l", "ai", "O", "D", "o:", "v")
-##' 
-##' # set legal labels of the 
-##' # default "Phonetic" attributeDefinition of
-##' # the "Phonetic" level of ae emuDB
-##' set_legalLabels(emuDBhandle = ae, 
-##'                 levelName = "Phonetic",
-##'                 attributeDefinitionName = "Phonetic",
-##'                 legalLabels = legalPhoneticLabels)
-##' 
-##' # get legal labels of the 
-##' # default "Phonetic" attributeDefinition of
-##' # the "Phonetic" level of ae emuDB
-##' get_legalLabels(emuDBhandle = ae, 
-##'                 levelName = "Phonetic", 
-##'                 attributeDefinitionName = "Phonetic")
-##'                 
-##' 
-##' # remove legal labels of the 
-##' # default "Phonetic" attributeDefinition of
-##' # the "Phonetic" level of ae emuDB
-##' remove_legalLabels(emuDBhandle = ae, 
-##'                    levelName = "Phonetic", 
-##'                    attributeDefinitionName = "Phonetic")
-##'                 
-##' }
-##' 
-NULL
-
-##' @rdname SetGetRemoveLegalLabels
-##' @export
-set_legalLabels <- function(emuDBhandle,
-                            levelName,
-                            attributeDefinitionName,
-                            legalLabels){
-  
-  if(!is.null(legalLabels) & class(legalLabels) != "character"){
-    stop("legalLables must be of class 'character'")
-  }
-  
-  dbConfig = load_DBconfig(emuDBhandle)
-  
-  for(i in 1:length(dbConfig$levelDefinitions)){
-    for(j in 1:length(dbConfig$levelDefinitions[[i]]$attributeDefinitions)){
-      if(dbConfig$levelDefinitions[[i]]$attributeDefinitions[[j]]$name == attributeDefinitionName){
-        dbConfig$levelDefinitions[[i]]$attributeDefinitions[[j]]$legalLabels = legalLabels
-      }
-    }
-  }
-  
-  # store changes
-  store_DBconfig(emuDBhandle, dbConfig)
-  
-}
-
-
-##' @rdname SetGetRemoveLegalLabels
-##' @export
-get_legalLabels <- function(emuDBhandle,
-                            levelName,
-                            attributeDefinitionName){
-  
-  ld = get_levelDefinition(emuDBhandle, levelName)
-  
-  ll = NULL
-  for(ad in ld$attributeDefinitions){
-    if(ad$name == attributeDefinitionName){
-      if(!is.null(ad$legalLabels)){
-        ll = unlist(ad$legalLabels)
-      }else{
-        ll = NA
-      }
-    }
-  }
-  
-  return(ll)
-}
-
-
-##' @rdname SetGetRemoveLegalLabels
-##' @export
-remove_legalLabels <- function(emuDBhandle,
-                               levelName,
-                               attributeDefinitionName){
-  
-  # remove by setting to NULL
-  set_legalLabels(emuDBhandle,
-                  levelName,
-                  attributeDefinitionName,
-                  legalLabels = NULL)
-}
-
-###################################################
 # CRUD operations for attributeDefinition$labelGroups
 
 ##' Add / List / Remove labelGroup to / of / from attributeDefinition of emuDB
@@ -841,8 +719,6 @@ remove_attrDefLabelGroup <- function(emuDBhandle,
   store_DBconfig(emuDBhandle, dbConfig)
   
 }
-
-
 
 # FOR DEVELOPMENT 
 # library('testthat') 
