@@ -4,14 +4,14 @@
 #########################################################
 
 
-##' print trackdata
+##' Print function for trackdata objects
 ##' 
-##' see function
+##' The function prints the origin of the trackdata object, the indicies where each segment starts and ends, the corresponding time indications and the raw data values.
 ##' 
 ##' 
 ##' @keywords internal
 ##' @export
-"print.trackdata"<- function(x, ...)
+print.trackdata <- function(x, ...)
 {
   if(is.null(x$trackname)) 
     cat("trackdata from unknown track.\n")
@@ -28,10 +28,7 @@
 
 
 
-##' Expand trackdata
-##' 
-##' see function
-##' 
+##' Extract track values belonging to a segment or segments.
 ##' 
 ##' @aliases [.trackdata
 ##' @keywords internal
@@ -74,31 +71,16 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##' summary trackdata
+##' A summary function for trackdata objects
 ##' 
-##' summarizes trackdata objects
+##' The summary function displays the number of segments for which track values are present in the \code{trackdata} object, the number of dimensions and the average number of samples in the per segment tracks. 
 ##' 
 ##' 
 ##' @param object track data object
-##' @param \dots see summary
+##' @param \dots see \code{\link{summary}}
 ##' @keywords internal
-##' @method summary trackdata
 ##' @export
-"summary.trackdata" <- function(object, ...)
+summary.trackdata <- function(object, ...)
 {
   if( is.matrix(object$data)){
     dimens <- ncol(object$data)
@@ -116,27 +98,17 @@
 }
 
 
-
-
-
-
-
-
-
-
-##' Create an Emu trackdata object
-##' 
 ##' Create an Emu trackdata object from a raw data matrix.
 ##' 
-##' Emu trackdata objects contain possibly multi-column numerical data
+##' Emu trackdata objects contain one or more columns of numerical data
 ##' corresponding to a set of segments from a database.  Data for each segment
 ##' takes up a number of rows in the main \code{data} matrix, the start and end
 ##' rows are stored in the \code{index} component.  The \code{ftime} component
 ##' contains the start and end times of the segment data.
 ##' 
-##' Trackdata objects are returned by the \code{\link{get_trackdata}} function.
+##' Trackdata objects are returned by the \code{\link{get_trackdata}} function or by direct contruction using this function (\code{as.trackdata}) from a matrix of values and two matrices of index and time values for each segment. 
 ##' 
-##' @param data A two dimensional matrix of numerical data.
+##' @param data A two dimensional matrix of numerical data. Each column should contain a new dimension in the trackdata. The tracks corresponding to each segment should be concatenated on top of each other (see \code{\link{rbind}}).
 ##' @param index Segment index, one row per segment, two columns give the start
 ##' and end rows in the \code{data} matrix for each segment.
 ##' @param ftime A two column matrix with one row per segment, gives the start
@@ -180,38 +152,26 @@
   } else {
     class(mat) <- "trackdata"
   }
-  mat
+  if(is.trackdata(mat)){
+    mat 
+  }else{
+    stop("Cannot construct a valid trackdata object from the supplied information.",call=TRUE)
+  }
 }
 
 
-
-
-
-
-
-
-
-##' Test whether an object is an Emu trackdata object
-##' 
 ##' Test whether an object is an Emu trackdata object
 ##' 
 ##' 
 ##' @param object A data object to be tested
 ##' @return Returns TRUE if the argument is a trackdata object.
-##' @seealso \code{\link{get_trackdata}}
+##' @seealso \code{\link{get_trackdata}} \code{\link{is.trackdata}}
 ##' @keywords misc
 ##' @export is.trackdata
-"is.trackdata" <- function (object) 
+is.trackdata <- function (object) 
 {
-  return(inherits(object, "trackdata"))
+  return(inherits(object, "trackdata") && ! is.null(object$data) && ! is.null(object$index) && ! is.null(object$ftime))
 }
-
-
-
-
-
-
-
 
 
 ##' Produces time-series plots from trackdata
@@ -222,41 +182,35 @@
 ##' The function plots a single segment of trackdata as a function of time. If
 ##' the segment contains multiple tracks, then these will be overlaid. If there
 ##' are several temporally non-contiguous segments in the trackdata object,
-##' each segment is plotted in a different panel by specifying contig=F. This
+##' each segment is plotted in a different panel by specifying contig=FALSE. This
 ##' function is not suitable for overlaying trackdata from more than one
 ##' segments on the same plot as a function of time: for this use dplot().
 ##' 
 ##' @param x A trackdata object.
-##' @param timestart A single valued numeric vector for setting the time at
-##' which the trackdata should start. Defaults to NULL which means that the
-##' start time is taken from start(trackdata), i.e. the time at which the
-##' trackdata object starts.
-##' @param xlim A numeric vector of two values for specifying the time interval
-##' over which the trackdata is to be plotted. Defaults to NULL which means
-##' that the trackdata object is plotted between between the start time of the
-##' first segment and the end time of the last segment.
-##' @param ylim Specify a yaxis range.
+##' @param timestart Track data with time indices (\code{x$ftime}) below this value will not be plotted. If \code{NULL} (the default), the start time will be the start of the segment, as indicated by the trackdata object.
+##' @param xlim The time range \code{c(min,max)} to be included in the plot.
+##' @param ylim The y axis range \code{c(min,max)} to be presented in the plot.
 ##' @param labels A character vector the same length as the number of segments
 ##' in the trackdata object. Each label is plotted at side = 3 on the plotted
 ##' at the temporal midpoint of each segment in the trackdata object. Defaults
 ##' to NULL (plot no labels). Labels will only be plotted if xlim=NULL.
-##' @param col A single element logical vector. Defaults to T to plot each
+##' @param col A single element logical vector. Defaults to \code{TRUE} to plot each
 ##' label type in a different colour
-##' @param lty A single element logical vector. Defaults to F.  If TRUE, plot
+##' @param lty A single element logical vector. Defaults to \code{FALSE}.  If \code{TRUE}, plot
 ##' each label type in a different linetype
-##' @param type Specify the type of plot. See \link{plot} for the various
+##' @param type Specify the type of plot. See \code{\link{plot}} for the various
 ##' possibilities
 ##' @param pch The symbol types to be used for plotting. Should be specified as
 ##' a numeric vector of the same length as there are unique label classes
-##' @param contig A single valued logical vector T or F. If T, then all the
+##' @param contig A single valued logical vector \code{TRUE} or \code{FALSE}. If \code{TRUE}, then all the
 ##' segments of the trackdata object are assumed to be temporally contiguous,
 ##' i.e. the boundaries of the segments are abutting in time and the start time
 ##' of segment[j,] is the end time of segment[j-1,]. In this case, all the
 ##' segments of the trackdata object are plotted on the same plot as a function
 ##' of time. An example of a contiguous trackdata object is coutts.sam. contig
-##' = FALSE is when a trackdata object is non-contiguous e.g. all "i:" vowels
+##' = \code{FALSE} is when a trackdata object is non-contiguous e.g. all "i:" vowels
 ##' in a database. An example of a non-contiguous trackdata object is
-##' vowlax.fdat. If contig=F then each segment of the trackdata object is
+##' vowlax.fdat. If contig=FALSE then each segment of the trackdata object is
 ##' plotted separately.
 ##' @param ...  the same graphical parameters can be supplied to this function
 ##' as for plot e.g type="l", lty=2 etc.
@@ -283,13 +237,11 @@
 ##' 
 ##' # F1 and F2 of six vowels with labels, separate windows
 ##' par(mfrow=c(2,3))
-##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", 
-##' xlab="Time (ms)", type="b", ylim=c(300, 2400))
+##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", xlab="Time (ms)", type="b", ylim=c(300, 2400))
 ##' 
 ##' # As above, timestart set to zero, colour set to blue, different plotting
 ##' # symbols for the two tracks
-##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", 
-##' xlab="Time (ms)", type="b", col="blue", pch=c(1,2),  ylim=c(300, 2400), timestart=0)
+##' plot(vowlax.fdat[1:6,1:2], contig=FALSE, labels=vowlax.l[1:6], ylab="F1 and F2", xlab="Time (ms)", type="b", col="blue", pch=c(1,2),  ylim=c(300, 2400), timestart=0)
 ##' 
 ##' # RMS energy for the utterance 'just relax said Coutts'
 ##'  plot(coutts.rms, type="l")
@@ -316,7 +268,7 @@
 ##' 
 ##' 
 ##' @export
-`plot.trackdata` <- function (x, timestart = NULL, xlim = NULL, 
+plot.trackdata <- function (x, timestart = NULL, xlim = NULL, 
                               ylim = NULL, labels = NULL, col = TRUE, 
                               lty = FALSE, type="p", pch=NULL, 
                               contig = TRUE, ...) 
@@ -355,8 +307,6 @@
     if(length(pch)!=ncol(trackdata))
       pch <- rep(pch[1], ncol(trackdata))
   }
-  
-  
   n <- nrow(trackdata)
   if (!is.null(xlim)) 
     labels <- NULL
@@ -420,8 +370,11 @@
 
 
 
+##' Bark transformation of the data in a trackdata object
+##' @param a the trackdata object.
+##' @return The \code{\link{trackdata}} object with track values converted into bark scale.
 ##' @export
-"bark.trackdata" <- function(f, ...)
+bark.trackdata <- function(f, ...)
 {
   trackdata = f
   if(is.spectral(trackdata$data))
@@ -434,8 +387,11 @@
 }
 
 
+##' Mel transformation of the data in a trackdata object
+##' @param a the trackdata object.
+##' @return The \code{\link{trackdata}} object with track values converted into mel scale.
 ##' @export
-"mel.trackdata" <- function(a)
+mel.trackdata <- function(a)
 {
   trackdata = a
   if(is.spectral(trackdata$data))
@@ -446,18 +402,6 @@
     return(trackdata)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 ##' function to find the frequencies of a spectral object
 ##' 
@@ -486,21 +430,12 @@
 ##' 
 ##' 
 ##' @export trackfreq
-"trackfreq" <- function(specdata){
+trackfreq <- function(specdata){
   if(is.trackdata(specdata))
     return(attr(specdata$data, "fs"))
   else
     return(attr(specdata, "fs"))
 }
-
-
-
-
-
-
-
-
-
 
 ##' get trackkeywrd
 ##' 
@@ -532,15 +467,7 @@
 }
 
 
-
-
-
-
-
-
-
-
-##' Duration of trackdata elements
+##' Durations of trackdata segments
 ##' 
 ##' Duration of segments is calculated for each element in the trackdata object
 ##' 
@@ -550,33 +477,23 @@
 ##' @author Jonathan Harrington
 ##' @keywords internal
 ##' @export
-"dur.trackdata" <- function (x) 
+dur.trackdata <- function (x) 
 {
   x$ftime[,2] - x$ftime[,1]
 }
 
-
-
-
-
-
-
-
-
-##' frames
-##' 
 ##' Get frames from trackdata objects
 ##' 
 ##' 
-##' @param trackdata an object of class trackdata
-##' @return Data frames from the input object.
+##' @param x an object of class trackdata
+##' @return A matrix of data values. Each column in the matrix will have all the values obtained for a track across all segments.
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{trackdata}}
 ##' @keywords utilities
 ##' @export frames
-"frames" <- function(trackdata)
+frames <- function(x)
 {
-  if(!(is.trackdata(trackdata)))
+  if(!(is.trackdata(x)))
     stop ("Object must be of class trackdata")
-  trackdata$data
+  return(trackdata$data)
 }

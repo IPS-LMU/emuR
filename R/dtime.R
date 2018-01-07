@@ -1,30 +1,37 @@
-##' time signal times
+##' A function that may be used to extract track values from a trackdata object.
 ##' 
-##' see function
-##' 
-##' 
+##' @param track The trackdata object from which data should be extracted.
+##' @param times Either: a numeric vector of the same length as there are
+##' observations in trackdata. Or: a single value between 0 and 1. In the first
+##' case, the left time boundary of trackdata[n,] is cut at left.time[n] it is cut at that proportional time.
+##' @param single If TRUE, one value is returned per segment. This applies when
+##' the requested time falls between two track frames. When single=TRUE, the
+##' preceding value is returned, unless average=TRUE (see below), in which case
+##' the average value of the two frames is returned. 
+##' @param average A single element logical vector - see single above.
+##' @return A matrix containing the extracted track values, one column per track in the supplied trackdata object.
 ##' @keywords internal
 ##' @export dtime
-dtime <- function(dataset, times, single = TRUE, average = TRUE) {
-  if(!is.matrix(dataset$data))
-    dataset$data <- cbind(dataset$data)
+dtime <- function(track, times, single = TRUE, average = TRUE) {
+  if(!is.matrix(track$data))
+    track$data <- cbind(track$data)
   
-  if(!is.matrix(dataset$index)) {
-    dataset$index <- rbind(dataset$index)
-    dataset$ftime <- rbind(dataset$ftime)
+  if(!is.matrix(track$index)) {
+    track$index <- rbind(track$index)
+    track$ftime <- rbind(track$ftime)
   }
   
   mat <- NULL
   
   for(j in 1:length(times)) {
-    left <- dataset$index[j, 1]
-    right <- dataset$index[j, 2]
-    dat <- dataset$data[left:right,  ]
+    left <- track$index[j, 1]
+    right <- track$index[j, 2]
+    dat <- track$data[left:right,  ]
     if(!is.matrix(dat))
       dat <- cbind(dat)
     lval <- right - left + 1
-    left.time <- dataset$ftime[j, 1]
-    right.time <- dataset$ftime[j, 2]
+    left.time <- track$ftime[j, 1]
+    right.time <- track$ftime[j, 2]
     seq.times <- seq(left.time, right.time, length = lval)
     cval <- closest(seq.times, times[j])
     if(single) {
@@ -47,18 +54,6 @@ dtime <- function(dataset, times, single = TRUE, average = TRUE) {
     mat
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ##' Function to extract a vector or matrix from EMU-Trackdata at a single time
@@ -85,11 +80,11 @@ dtime <- function(dataset, times, single = TRUE, average = TRUE) {
 ##' @param left.time Either: a numeric vector of the same length as there are
 ##' observations in trackdata. Or: a single value between 0 and 1. In the first
 ##' case, the left time boundary of trackdata[n,] is cut at left.time[n], in
-##' the second case, and if prop=T, it is cut at that proportional time.
+##' the second case, and if prop=TRUE, it is cut at that proportional time.
 ##' @param right.time Either: a numeric vector of the same length as there are
 ##' observations in trackdata. Or: a single value between 0 and 1. In the first
 ##' case, the right time boundary of trackdata[n,] is cut at right.time[n], in
-##' the second case, and if prop=T, it is cut at that proportional time.
+##' the second case, and if prop=TRUE, it is cut at that proportional time.
 ##' @param single If TRUE, one value is returned per segment. This applies when
 ##' the requested time falls between two track frames. When single=TRUE, the
 ##' preceding value is returned, unless average=TRUE (see below), in which case
@@ -139,7 +134,7 @@ dtime <- function(dataset, times, single = TRUE, average = TRUE) {
 ##'      int[1]
 ##'  
 ##' @export dcut
-"dcut" <- function (trackdata, left.time, right.time, 
+dcut <- function (trackdata, left.time, right.time, 
                     single = TRUE, average = TRUE, prop = FALSE) 
 {
   if (prop) {
@@ -195,8 +190,15 @@ dtime <- function(dataset, times, single = TRUE, average = TRUE) {
 
 
 
-##' @export
-"dcut.sub" <- function(trackdata, left.time, right.time)
+#' Interal function that performs the heavy lifting in trackdata subsetting
+#'
+#' @param trackdata 
+#' @param left.time 
+#' @param right.time 
+#'
+#' @return A new trackdata object with the specified parts of the original trackdata kept.
+
+dcut.sub <- function(trackdata, left.time, right.time)
 {
   vals <- trackdata$data
   left <- trackdata$ftime[1]

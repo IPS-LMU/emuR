@@ -25,24 +25,22 @@
 
 
 
-##' num label
+##' Convert a character vector to a vector of indicies
 ##' 
-##' see function
+##' @param labs A vector of strings.
+##' @return A vector of \code{length(labs)} integers, each one representing where the string is located in a unique index of the string vector.
 ##' 
+##' @examples 
+##' d <- c(LETTERS[1:3],LETTERS[2:4])
+##' print(label_num(d))
 ##' 
 ##' @keywords internal
-##' @export label_num
-"label_num" <- function(labs)
+##' 
+label_num <- function (labs) 
 {
-  ## labs: a vector of labels
-  ## convert labels to integers
-  qq <- unique(labs)
-  nums <- c(1:length(qq))
-  for(j in 1:length(qq)) {
-    temp <- labs == qq[j]
-    labs[temp] <- nums[j]
-  }
-  as.numeric(labs)
+  labs <- as.character(as.vector(labs))
+  return(as.numeric(factor(labs,levels=unique(labs))))
+  
 }
 
 

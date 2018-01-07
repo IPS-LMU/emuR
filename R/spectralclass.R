@@ -1,10 +1,10 @@
 ##' Function to test whether the object is of class "spectral"
 ##' 
-##' Returns T or F depending on whether the object is of class "spectral"
+##' Returns \code{TRUE} or \code{FALSE} depending on whether the object is of class "spectral".
 ##' 
 ##' 
-##' @param dat An R object
-##' @return A single element logical vector: T or F
+##' @param obj An R object
+##' @return A value, \code{TRUE} or \code{FALSE}
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{as.spectral}}
 ##' @keywords attribute
@@ -19,39 +19,28 @@
 ##' 
 ##' 
 ##' 
-##' @export is.spectral
-"is.spectral" <- function(dat)
+##' @export 
+is.spectral <- function(obj)
 {
-  if(!is.trackdata(dat))
-    return(any(class(dat) %in% "spectral"))
-  else
-    return(any(class(dat$data) %in% "spectral"))
+#  if(!is.trackdata(dat))
+    return("spectral" %in% class(obj) && !is.null(attr(obj,"fs")))
+#  else
+#    return("spectral" %in% class(dat$data) && !is.null(attr(dat,"fs")))
 }
 
 
-
-
-
-
-
-
-
-
-
-##' Function to convert an object into an object of class 'spectral'.
+##' Converts a matrix into an object of class 'spectral'.
 ##' 
-##' The function converts a vector, matrix, or EMU-trackdata object into an
-##' object of the same class and of class 'spectral'
 ##' 
-##' If fs is a single element numeric vector, then the frequencies of trackdata
-##' are defined to extend to fs/2. If fs is missing, then the frequencies are
-##' 0:(N-1) where N is the length of trackdata.
+##' The supplied matrix is assumed to have one row per segment, and one column per sampling frequency. The user may specify either a sampling frequency for the spectral object in the \code{fs} argument (a single numeric value) or a vector of numbers equl in length to the number of columns in \code{mat}. 
 ##' 
-##' @param trackdata A vector, matrix, or EMU-trackdata object.
+##' @export
+##' 
+##' @param mat A matrix object
 ##' @param fs Either a single element numeric vector, or a numeric vector of
-##' the same length as the length of trackdata if trackdata is a vector, or of
-##' the same number of rows as trackdata
-##' @return The same object but of class 'spectral'.
+##' the same length as the number of columns in \code{mat}.
+##' @param single.segment This argument only matters if an array/vector (one dimensional matrix) is supplied to the function. If \code{single.segment=TRUE} (the default), it will be assumed that the spectral data contained in the vector was obtained from a single segment, and the spectral object will then have one row and as many columns as the length of the vector. If \code{single.segment=FALSE} the vector will instead be converted into a 1 column matrix, which is essentially a 1 dimensional spectral result from each segment. 
+##' @return An object of class 'spectral' with values from each sample frequency in columns.
 ##' @author Jonathan Harrington
 ##' @seealso \code{\link{is.spectral}} \code{\link{plot.spectral}}
 ##' @keywords attribute
@@ -61,95 +50,93 @@
 ##' as.spectral(vec, 2000)
 ##' mat = rbind(1:10, 1:10)
 ##' as.spectral(mat)
-##' # turn a spectral trackdata object into a trackdata object
-##' tr = as.trackdata(rbind(fric.dft$data), fric.dft$index, fric.dft$ftime)
-##' # turn it into a spectral trackdata object with sampling freq 16 kHz
-##' tr = as.spectral(tr, 16000)
-##' # list the frequencies
-##' trackfreq(tr)
-##' # Notice that only the $data is made into a spectral matrix,
-##' # not the entire trackdata object
-##' # so this is trackdata
-##' class(tr)
-##' # this is a spectral matrix
-##' class(tr$data)
-##' 
-##' 
-##' 
-##' 
-##' @export as.spectral
-"as.spectral" <- function(trackdata, fs)
+
+
+as.spectral.matrix <- function(mat, fs=NULL,single.segment=TRUE)
 {
-  if(is.trackdata(trackdata)){
-    
-    if(is.spectral(trackdata$data)) {
-      warning("matrix is already of class spectral")
-      return(trackdata)
-    }
-    N <- ncol(trackdata$data)
-    if(missing(fs))
-      fs <- 0: (ncol(trackdata$data)-1)
-    else{
-      if(length(fs)==1)
-      {
-        fs <- fs/2
-        fs <- seq(0, fs, length=N)
-      }
-    }
-    attr(trackdata$data, "fs") <- fs
-    class(trackdata$data) <- c(class(trackdata$data), "spectral")
+  if (!is.matrix(mat)){
+    stop("The supplied object is not a matrix.")
   }
+  if(is.spectral(mat)) {
+    warning("The matrix is already of class spectral")
+    return(mat)
+  }
+  N <- ncol(mat)
+  if(N == 1 && single.segment){
+    mat <- t(mat)
+  }
+  if(is.null(fs))
+    fs <- 0:(ncol(mat)-1)
+  else{
+    if(length(fs)==1)
+    {
+      fs <- fs/2
+      fs <- seq(0, fs, length.out=N)
+    }
+  }
+  attr(mat,"fs") <- fs
+  class(mat) <- c(class(mat), "spectral")
   
-  else if (is.matrix(trackdata)){
-    if(is.spectral(trackdata)) {
-      warning("matrix is already of class spectral")
-      return(trackdata)
-    }
-    N <- ncol(trackdata)
-    if(missing(fs))
-      fs <- 0: (ncol(trackdata)-1)
-    else{
-      if(length(fs)==1)
-      {
-        fs <- fs/2
-        fs <- seq(0, fs, length=N)
-      }
-    }
-    attr(trackdata, "fs") <- fs
-    class(trackdata) <- c(class(trackdata), "spectral")
-  }
-  else
-  {
-    
-    if(is.spectral(trackdata)){
-      warning("matrix is already of class spectral")
-      return(trackdata)
-    }
-    N <- length(trackdata)
-    if(missing(fs))
-      fs <- 0: (length(trackdata)-1)
-    else{
-      if(length(fs)==1)
-      {
-        fs <- fs/2
-        fs <- seq(0, fs, length=N)
-      }
-    }
-    attr(trackdata, "fs") <- fs
-    class(trackdata) <- c(class(trackdata), "spectral")
-  }
-  trackdata
+  return(mat)
 }
 
 
+# ##' Converts a trackdata object into an object of class 'spectral'.
+# ##' 
+# ##' 
+# ##' 
+# ##' 
+# ##' 
+# ##' @param track A trackdata object.
+# ##' @param fs Either a single element numeric vector, or a numeric vector of
+# ##' the same length as the length of trackdata if trackdata is a vector, or of
+# ##' the same number of rows as trackdata
+# ##' @return The same object but of class 'spectral'.
+# ##' @author Jonathan Harrington
+# ##' @seealso \code{\link{is.spectral}} \code{\link{plot.spectral}}
+# ##' @keywords attribute
+# ##' @examples
+# ##' # turn a new spectral trackdata object into a trackdata object
+# ##' tr = as.trackdata(rbind(fric.dft$data), fric.dft$index, fric.dft$ftime)
+# ##' # turn it into a spectral trackdata object with sampling freq 16 kHz
+# ##' tr = as.spectral(tr, 16000)
+# ##' # list the frequencies
+# ##' trackfreq(tr)
+# ##' # Notice that only the $data is made into a spectral matrix,
+# ##' # not the entire trackdata object
+# ##' # so this is trackdata
+# ##' class(tr)
+# ##' # this is a spectral matrix
+# ##' class(tr$data)
+# ##' 
+# 
+# 
+# as.spectral.trackdata <- function(track,fs=NULL)
+# {
+#   if(is.spectral(track) || is.spectral(track$data)) {
+#     warning("The trackdata object is already of class spectral")
+#     return(trackdata)
+#   }
+#   N <- ncol(track$data)
+#   if(is.null(fs))
+#     fs <- 0:(ncol(track$data)-1)
+#   else{
+#     if(length(fs)==1)
+#     {
+#       fs <- fs/2
+#       fs <- seq(0, fs, length.out=N)
+#     }
+#   }
+#   attr(track$data, "fs") <- fs
+#   class(track$data) <- c(class(track$data), "spectral")
+#   return(track)
+# }
 
 
 
-
-
-
-
-
+as.spectral <- function(x) {
+  UseMethod("as.spectral")
+}
 
 
 ##' Plot spectra from EMU spectral objects

@@ -1,41 +1,40 @@
-##' Find the time and position of a data element.
+##' Find the time and segment corresponding to an index within a trackdata object.
 ##' 
-##' Finds the time and position of a data element.
+##' Trackdata objects have a \code{data} component and two index components
+##' (\code{index} and \code{ftime}). This function can be used to find out which
+##' segment and timepoint (\code{ftime}) a particular row of \code{data} corresponds to.
 ##' 
-##' The dataset returned from \code{track} or \code{frames} consists of a
-##' matrix of data (the \code{data} component) and two index components
-##' (\code{index} and \code{ftime}). The data for all segments is concatenated
-##' together in \code{$data}.  This function can be used to find out which
-##' segment a particular row of \code{$data} corresponds to.
-##' 
-##' @param dataset A dataset returned by \code{track} or \code{frames}.
+##' @param track A trackdata object, as returned by \code{track} or \code{frames}.
 ##' @param datanum An integer, an index into the \code{data} component of
-##' \code{dataset}.
-##' @return The segment number which contains the element \code{datanum} of
-##' \code{dataset$data}.
+##' \code{track}.
+##' @return A list with the following components
+##' \item{segnum}{The index of the segment which the value found at index \code{datanum} belongs to.}
+##' \item{time}{The time in the \code{ftime} field in the trackdata object that is found at the \code{datanum} index}
+##' @examples 
+##' coutts.epg
+##' frames.time(coutts.epg,1)
 ##' @seealso track, frames
 ##' @keywords misc
-##' @export frames.time
-"frames.time" <- function(dataset, datanum)
+##' @export
+##' 
+
+frames.time <- function(track, datanum)
 {
   ## return the time and the number of the segment element
   ## that the datanum refers to
-  if(is.matrix(dataset$ftime) == FALSE) dataset$ftime <- rbind(dataset$ftime)
-  if(is.matrix(dataset$index) == FALSE)  dataset$index <- rbind(dataset$index)
-  nums <- seq(1, nrow(dataset$ftime))
-  incl <- dataset$index[, 1] <= datanum & dataset$index[, 2] >= datanum
+  if(is.matrix(track$ftime) == FALSE) track$ftime <- rbind(track$ftime)
+  if(is.matrix(track$index) == FALSE)  track$index <- rbind(track$index)
+  nums <- seq(1, nrow(track$ftime))
+  incl <- track$index[, 1] <= datanum & track$index[, 2] >= datanum
   retv <- NULL
   segnum <- nums[incl]
-  percent <- (datanum - dataset$index[segnum, 1])/
-             (dataset$index[segnum, 2] - dataset$index[segnum, 1])
+  percent <- (datanum - track$index[segnum, 1])/
+             (track$index[segnum, 2] - track$index[segnum, 1])
   retv$segnum <- segnum
-  retv$time <- dataset$ftime[segnum, 1] + 
-               percent * (dataset$ftime[segnum, 2] - dataset$ftime[segnum, 1])
+  retv$time <- track$ftime[segnum, 1] + 
+               percent * (track$ftime[segnum, 2] - track$ftime[segnum, 1])
   retv
 }
-
-
-
 
 
 
@@ -55,7 +54,7 @@
 ##' @seealso track, frames
 ##' @keywords misc
 ##' @export get.time.element
-"get.time.element"<- function(timeval, dataset)
+get.time.element <- function(timeval, dataset)
 {
   ## timeval: a time in milliseconds
   ## dataset: a data structure consisting of $data, $ftime, $index
