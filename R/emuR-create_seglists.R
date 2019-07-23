@@ -477,7 +477,7 @@ convert_queryResultToEmuRsegs <- function(emuDBhandle,
   slType='segment'
   if(nrow(seglist)>0){
     # set to event only if all rows are of type EVENT
-    if(all(seglist$type == "EVENT")){
+    if(all(seglist$type == "EVENT" || is.na(seglist$type) )){
       slType='event'
     }
   }
