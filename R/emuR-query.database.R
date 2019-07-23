@@ -1921,13 +1921,14 @@ query_databaseEqlInBracket<-function(emuDBhandle,
     # check equal levels for sequence query
     # (Do this already at this point, fixes issue: Sequence query should 
     # always throw an error if arguments not on same level. #39 )
+    # Edit : in the same attribyte of a level #215
     if(seqPos != -1 & lResAttrName != rResAttrName){
-      stop("Levels of sequence query '", 
+      stop("Sequential queries need to reference a labels in the same attributes of a level.\n The sequence query '", 
            qTrim,
-           "' do not match. (",
+           "' tries to find labels in different attributes ('",
            lResAttrName,
-           " not equal ",
-           rResAttrName,")")
+           "' and '",
+           rResAttrName,"') and is therefore not valid.",call.=FALSE)
     }
     
     
