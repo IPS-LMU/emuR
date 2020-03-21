@@ -6,8 +6,14 @@
 \title{Function to extract a vector or matrix from EMU-Trackdata at a single time
 point of to create another EMU-trackdata object between two times.}
 \usage{
-dcut(trackdata, left.time, right.time, single = TRUE, average = TRUE,
-  prop = FALSE)
+dcut(
+  trackdata,
+  left.time,
+  right.time,
+  single = TRUE,
+  average = TRUE,
+  prop = FALSE
+)
 }
 \arguments{
 \item{trackdata}{An Emu trackdata object.}

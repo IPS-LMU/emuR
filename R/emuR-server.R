@@ -64,6 +64,7 @@ check_tibbleForServe <- function(tbl){
 ##' @param sessionPattern A regular expression pattern matching session names to be served
 ##' @param bundlePattern A regular expression pattern matching bundle names to be served
 ##' @param seglist segment list to use for times anchors and session + bundle restriction (type: \link{emuRsegs})
+##' @param bundleListName name of bundleList stored in emuDB/bundleLists subdir to send to EMU-webApp
 ##' @param host host IP to listen to (default: 127.0.0.1  (localhost))
 ##' @param port the port number to listen on (default: 17890)
 ##' @param autoOpenURL URL passed to \code{\link{browseURL}} function. If NULL or an empty string are passed in
@@ -93,6 +94,7 @@ serve <- function(emuDBhandle,
                   sessionPattern = '.*', 
                   bundlePattern = '.*', 
                   seglist = NULL,
+                  bundleListName = NULL,
                   host = '127.0.0.1', 
                   port = 17890, 
                   autoOpenURL = "https://ips-lmu.github.io/EMU-webApp/?autoConnect=true", 
@@ -107,10 +109,10 @@ serve <- function(emuDBhandle,
     debugLevel=2
   }
   
-  bundleCount=0
+  bundleCount = 0
   DBconfig = load_DBconfig(emuDBhandle)
   if(is.null(seglist)){
-    allBundlesDf=list_bundles(emuDBhandle)
+    allBundlesDf = list_bundles(emuDBhandle)
   }else{
     check_tibbleForServe(seglist)
     tmp = data.frame(session = seglist$session, 
@@ -120,6 +122,30 @@ serve <- function(emuDBhandle,
   }
   
   bundlesDf = allBundlesDf
+  
+  if(!is.null(bundleListName)){
+    if(!is.null(seglist)){
+      stop("both seglist & bundleListName can't be set at the same time!")
+    }
+    bundlesDf = read_bundleList(emuDBhandle, bundleListName)
+    if(is.null(DBconfig$EMUwebAppConfig$restrictions$bundleComments) || is.null(DBconfig$EMUwebAppConfig$restrictions$bundleFinishedEditing)){
+      # TODO ask user to set?
+      DBconfig$EMUwebAppConfig$restrictions$bundleComments = TRUE
+      DBconfig$EMUwebAppConfig$restrictions$bundleFinishedEditing = TRUE
+      store_DBconfig(emuDBhandle, DBconfig)
+    }
+  }
+  
+  if(!is.null(DBconfig$EMUwebAppConfig$restrictions$bundleComments) || !is.null(DBconfig$EMUwebAppConfig$restrictions$bundleFinishedEditing)){
+    if(is.null(bundleListName)){
+      warning(paste0("'bundleComments' and/or 'bundleFinishedEditing' are set to true ",
+                     "in the DBconfig and the bundleListName parameter wasn't set! Any changes made ",
+                     "to those fields in the bundleListSideBar in the EMU-webApp won't be saved as ",
+                     "those values are stored in the bundleLists!"))
+    }
+  }
+  
+  
   if(!is.null(sessionPattern) && sessionPattern!='.*'){
     ssl = emuR_regexprl(sessionPattern, bundlesDf[['session']])
     bundlesDf = bundlesDf[ssl,]
@@ -127,6 +153,10 @@ serve <- function(emuDBhandle,
   if(!is.null(bundlePattern) && bundlePattern!='.*'){
     bsl = emuR_regexprl(bundlePattern,bundlesDf[['name']])
     bundlesDf = bundlesDf[bsl,]
+  }
+  
+  if(!is.null(bundleListName)){
+    bundlesDf = read_bundleList(emuDBhandle, bundleListName)
   }
   
   
@@ -423,8 +453,7 @@ serve <- function(emuDBhandle,
         }
         
         mediaFile = list(encoding = "GETURL", 
-                         data = paste0("http://", 
-                                       ws$request$HTTP_HOST, 
+                         data = paste0(rstudioapi::translateLocalUrl(paste0("http://", ws$request$HTTP_HOST)), 
                                        "?session=", 
                                        utils::URLencode(bundleSess, reserved = T),
                                        "&bundle=", 
@@ -520,7 +549,7 @@ serve <- function(emuDBhandle,
         # reset error
         err = NULL
         
-      }else if(jr[['type']] == 'SAVEBUNDLE'){
+      } else if(jr[['type']] == 'SAVEBUNDLE'){
         jrData = jr[['data']]
         jrAnnotation = jrData[['annotation']]
         bundleSession = jrData[['session']]
@@ -622,6 +651,19 @@ serve <- function(emuDBhandle,
                                     bundleAnnotDFs, 
                                     sessionName = bundleSession, 
                                     bundleName = bundleName)
+            
+            # update bundlesDf and store as bundleList
+            if(!is.null(bundleListName)){
+              bl = read_bundleList(emuDBhandle, bundleListName)
+              # print(jr[['data']][['comment']])
+              bl[bl$session == bundleSession & 
+                   bl$name == bundleName,]$comment = jr[['data']][['comment']]
+              bl[bl$session == bundleSession & 
+                          bl$name == bundleName,]$finishedEditing = jr[['data']][['finishedEditing']]
+              
+              write_bundleList(emuDBhandle, bundleListName, bl)
+
+            }
           }
         }
         if(is.null(err)){
@@ -691,7 +733,7 @@ serve <- function(emuDBhandle,
   if(length(autoOpenURL) != 0 && autoOpenURL != ""){
     # open browser with EMU-webApp
     viewer <- getOption("viewer")
-    if(useViewer){
+    if(useViewer & rstudioapi::isAvailable()){
       webApp_path = getOption("emuR.emuWebApp.dir")
       # TODO: can this be emulated? git clone --depth 1 -b gh-pages https://github.com/IPS-LMU/EMU-webApp
       #unlink(webApp_path, recursive = T)
@@ -713,10 +755,10 @@ serve <- function(emuDBhandle,
       
       # replace <base href> tag because rstudio changes this 
       # in the web version and Angular needs it to be set
-      if(rstudioapi::translateLocalUrl("http://localhost:17890/") == "http://localhost:17890/"){
+      if(rstudioapi::translateLocalUrl(paste0("http://localhost:", port, "/")) == paste0("http://localhost:", port, "/")){
         base_path = "/"
       } else {
-        base_path = paste0("/", rstudioapi::translateLocalUrl("http://localhost:17890/"))
+        base_path = paste0("/", rstudioapi::translateLocalUrl(paste0("http://localhost:", port, "/")))
       }
       
       index_html = readr::read_file(file.path(webApp_path, "index.html"))
@@ -736,13 +778,17 @@ serve <- function(emuDBhandle,
         # host in viewer
         viewer(paste0("http://127.0.0.1:", 
                       port, 
-                      "/?autoConnect=true&serverUrl=ws://127.0.0.1:", 
-                      port))
+                      "/?autoConnect=true",
+                      "&serverUrl=", 
+                      stringr::str_replace(rstudioapi::translateLocalUrl(paste0("http://127.0.0.1:", port), absolute = TRUE),
+                                                                         "http", 
+                                                                         "ws")))
       }else{
-        # default port of httd is 4321 so use that
+        # host in browser
         utils::browseURL(paste0("http://127.0.0.1:", 
                                 port, 
-                                "/?autoConnect=true&serverUrl=ws://127.0.0.1:", 
+                                "/?autoConnect=true",
+                                "&serverUrl=ws://127.0.0.1:", 
                                 port),
                          browser = browser)
       }
@@ -750,6 +796,7 @@ serve <- function(emuDBhandle,
     }else{
       # use online version
       utils::browseURL(autoOpenURL, browser = browser)
+      cat("Unable to detect RStudio. Serving to online version.\n")
     }
   }
   

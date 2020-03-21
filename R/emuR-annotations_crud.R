@@ -232,6 +232,26 @@ create_itemsInLevel = function(emuDBhandle,
     
     
   }
+  ## for SEGMENT
+  if(levelDefinition$type == "SEGMENT"){
+    
+    # get sample_rate vector
+    bundles_df = DBI::dbReadTable(emuDBhandle$connection, "bundle")
+    sample_rate = dplyr::left_join(itemsToCreate, 
+                                   bundles_df, 
+                                   by = c("session", "bundle" = "name")) %>% 
+      dplyr::select(dplyr::starts_with("sample_rate"))
+    
+    sample_rate = dplyr::as_tibble(sample_rate) # incase it isn't already
+    sample_rate = dplyr::pull(sample_rate[,ncol(sample_rate)]) # relevant when multiple sample_rate.x sample_rate.y cols are present
+    
+    
+    # calc. sample_start & sample_dur
+    # TODO: fix the calculation (look at create_seglist code for time calc)
+    itemsToCreate$sample_start = round((itemsToCreate$start / 1000) * sample_rate)
+    itemsToCreate$sample_dur = round(((itemsToCreate$end - itemsToCreate$start) / 1000) * sample_rate)
+    
+    }
   
   ##
   ## Get the label index for each attribute (the label index marks the order of attributes within their level)

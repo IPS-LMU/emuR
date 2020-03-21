@@ -1923,7 +1923,7 @@ query_databaseEqlInBracket<-function(emuDBhandle,
     # always throw an error if arguments not on same level. #39 )
     # Edit : in the same attribyte of a level #215
     if(seqPos != -1 & lResAttrName != rResAttrName){
-      stop("Sequential queries need to reference a labels in the same attributes of a level.\n The sequence query '", 
+      stop("Queried attribute names of sequence query '", 
            qTrim,
            "' tries to find labels in different attributes ('",
            lResAttrName,
@@ -2397,8 +2397,8 @@ query_databaseWithEqlEmuRsegs <- function(emuDBhandle,
 ##' @param verbose be verbose. Set this to \code{TRUE} if you wish to choose which 
 ##' path to traverse on intersecting hierarchies. If set to \code{FALSE} (the default) 
 ##' all paths will be traversed (= legacy EMU behaviour).
-##' @return result set object of class resultType (default: \link{emuRsegs}, 
-##' compatible to legacy type \link{emusegs})
+##' @return result set object of class resultType (default: \link{tibble}, 
+##' compatible to legacy types \link{emuRsegs} and \link{emusegs})
 ##' @export
 ##' @seealso \code{\link{load_emuDB}}
 ##' @keywords emuDB database query Emu EQL 
@@ -2449,18 +2449,27 @@ query <- function(emuDBhandle,
     drop_allTmpTablesDBI(emuDBhandle)
     create_tmpFilteredQueryTablesDBI(emuDBhandle)
     # precheck if sessionPattern & bundlePattern are not set
-    if((is.null(sessionPattern) || sessionPattern == '.*') 
-       && (is.null(bundlePattern) || bundlePattern == '.*')){
+    if(sessionPattern == '.*' && bundlePattern == '.*'){
       # simply use original tables (no "_filtered_tmp suffix")
       filteredTablesSuffix = ""
     }else{
-      # extract all items for session/bundlePattern regEx matching (should check if REGEXP is available and is so use that instead)
+      # extract all items for session/bundlePattern matching regex
       queryItems <- DBI::dbGetQuery(emuDBhandle$connection, 
-                                    paste0("SELECT * FROM items WHERE db_uuid='", emuDBhandle$UUID, "'"))
+                                    paste0("SELECT * FROM items ",
+                                           "WHERE db_uuid = '", emuDBhandle$UUID, "'",
+                                           " AND session REGEXP '", sessionPattern, "'",
+                                           " AND bundle REGEXP '", bundlePattern, "'"
+                                           ))
       queryLabels <- DBI::dbGetQuery(emuDBhandle$connection, 
-                                     paste0("SELECT * FROM labels WHERE db_uuid='", emuDBhandle$UUID, "'"))
+                                     paste0("SELECT * FROM labels WHERE db_uuid='", emuDBhandle$UUID, "'",
+                                            " AND session REGEXP '", sessionPattern, "'",
+                                            " AND bundle REGEXP '", bundlePattern, "'"
+                                            ))
       queryLinks <- DBI::dbGetQuery(emuDBhandle$connection, 
-                                    paste0("SELECT * FROM links WHERE db_uuid='", emuDBhandle$UUID,"'"))
+                                    paste0("SELECT * FROM links WHERE db_uuid='", emuDBhandle$UUID,"'",
+                                           " AND session REGEXP '", sessionPattern, "'",
+                                           " AND bundle REGEXP '", bundlePattern, "'"
+                                           ))
       
       # if set get logical vectors that match sessionPattern and bundlePattern
       if(!is.null(sessionPattern) && sessionPattern!='.*'){

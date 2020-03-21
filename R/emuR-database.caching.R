@@ -31,7 +31,7 @@ update_cache <- function(emuDBhandle, verbose = TRUE){
   }
   
   if(verbose){
-    cat("INFO: Checking if cache needs update for", nrow(sessions), "sessions")
+    cat("INFO: Checking if cache needs update for", nrow(sessions), "sessions ")
   }
   
   # handle session
@@ -54,7 +54,7 @@ update_cache <- function(emuDBhandle, verbose = TRUE){
   progress = 0
   
   if(verbose){
-    cat("and ", nrow(bundles), "bundles ...\n")
+    cat("and", nrow(bundles), "bundles ...\n")
   }
   
   

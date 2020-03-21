@@ -80,6 +80,9 @@ create_emuRtrackdata <- function(sl, td){
 
 "check_emuRtrackdataColumns" <- function(td){
   
+  # convert factors into characters
+  td = td %>% dplyr::mutate_if(is.factor, as.character)
+  
   # check if all columns of emuRsegs object are present
   emuRsegsNames = c("sl_rowIdx", "labels", "start", "end", 
                     "db_uuid", "session", 

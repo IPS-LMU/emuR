@@ -4,10 +4,16 @@
 \alias{runBASwebservice_g2pForTokenization}
 \title{Tokenizes an orthographic transcription.}
 \usage{
-runBASwebservice_g2pForTokenization(handle,
-  transcriptionAttributeDefinitionName, language,
-  orthoAttributeDefinitionName = "ORT", params = list(),
-  patience = 0, resume = FALSE, verbose = TRUE)
+runBASwebservice_g2pForTokenization(
+  handle,
+  transcriptionAttributeDefinitionName,
+  language,
+  orthoAttributeDefinitionName = "ORT",
+  params = list(),
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -47,12 +53,13 @@ A call to this function is usually followed by a call to \link{runBASwebservice_
 All necessary level, link and attribute definitions are created in the process.
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

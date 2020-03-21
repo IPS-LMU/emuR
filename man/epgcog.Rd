@@ -4,8 +4,13 @@
 \alias{epgcog}
 \title{Electropalatographic centre of gravity}
 \usage{
-epgcog(epgdata, weights = seq(7.5, 0.5, by = -1), rows = 1:8,
-  columns = 1:8, row1 = NULL)
+epgcog(
+  epgdata,
+  weights = seq(7.5, 0.5, by = -1),
+  rows = 1:8,
+  columns = 1:8,
+  row1 = NULL
+)
 }
 \arguments{
 \item{epgdata}{An eight-columned EPG-compressed trackdata object, or an

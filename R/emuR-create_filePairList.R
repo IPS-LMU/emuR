@@ -44,7 +44,11 @@ create_filePairList <- function(ext1Path2rootDir, ext2Path2rootDir, ext1, ext2){
   
   # check more ext1 found than ext2
   if(length(allExt1FilePaths) > length(allExt2FilePaths)){
-    stop('Found less files with ', ext2, ' extention than files with ', ext1, ' extention')
+    stop("Found less files with '", 
+         ext2, "' extension than files with '", 
+         ext1, "' extension in ", 
+         ext1Path2rootDir, " and ", 
+         ext2Path2rootDir, " including their sub-directories!")
   }
   
   # extract base names
@@ -57,20 +61,21 @@ create_filePairList <- function(ext1Path2rootDir, ext2Path2rootDir, ext1, ext2){
   
   # check if found all allExt2FilePathsBNs in allExt1FilePathsBNs
   if(length(allExt1FilePathsBNs) != length(equalToExt1FilePathsBNs)){
-    stop('Not all ', 
+    stop("Not all '", 
          ext2, 
-         ' files found for ', 
+         "' files found for '", 
          ext1, 
-         ' files found in ', 
+         "' files found in ", 
          ext1Path2rootDir, 
-         ' and ', 
-         ext2Path2rootDir ) 
+         " and ", 
+         ext2Path2rootDir, 
+         " including their sub-directories!") 
   }
   
   
   # check they are empty
   if(length(allExt1FilePathsBNs)==0 || length(allExt2FilePathsBNs) == 0){
-    stop('Both colomns in file pair list are empty! That means no files where found...') 
+    stop('Both colomns in file pair list are empty! This means that no files where found...') 
   }
   
   # cbind filePairList

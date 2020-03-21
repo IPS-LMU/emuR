@@ -4,15 +4,22 @@
 \alias{runBASwebservice_all}
 \title{Runs several BAS webservices, starting from an orthographic transcription}
 \usage{
-runBASwebservice_all(handle, transcriptionAttributeDefinitionName,
-  language, orthoAttributeDefinitionName = "ORT",
+runBASwebservice_all(
+  handle,
+  transcriptionAttributeDefinitionName,
+  language,
+  orthoAttributeDefinitionName = "ORT",
   canoAttributeDefinitionName = "KAN",
   mausAttributeDefinitionName = "MAU",
   minniAttributeDefinitionName = "MINNI",
   sylAttributeDefinitionName = "MAS",
   canoSylAttributeDefinitionName = "KAS",
-  chunkAttributeDefinitionName = "TRN", runMINNI = TRUE,
-  patience = 0, resume = FALSE, verbose = TRUE)
+  chunkAttributeDefinitionName = "TRN",
+  runMINNI = TRUE,
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -41,7 +48,7 @@ Up-to-date lists of the languages accepted by all webservices can be found here:
 Please note that the chunk segmentation will only be generated if your emuDB contains
 audio files beyond the one minute mark.}
 
-\item{runMINNI}{if set to \code{TRUE} (the default) the MINNI service is also run. As the MINNI serice contains
+\item{runMINNI}{if set to \code{TRUE} (the default) the MINNI service is also run. As the MINNI service contains
 less languages than the others it can be useful to turn this off.}
 
 \item{patience}{If a web service call fails, it is repeated a further n times, with n being the value of patience.
@@ -75,12 +82,13 @@ If you wish to change parameters, you must use the individual runBASwebservices 
 you to carry out manual corrections in between the steps, or to use different languages for different webservices.
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

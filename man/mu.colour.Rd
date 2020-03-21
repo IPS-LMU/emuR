@@ -5,8 +5,7 @@
 \title{Function for specifying color, linetype, and line-widths in EMU plotting
 functions.}
 \usage{
-mu.colour(labs, col = TRUE, linetype = FALSE, lwd = NULL,
-  pch = NULL)
+mu.colour(labs, col = TRUE, linetype = FALSE, lwd = NULL, pch = NULL)
 }
 \arguments{
 \item{labs}{A vector of character labels}

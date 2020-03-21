@@ -154,6 +154,20 @@ test_that("hierarchical requery on parallel attrDef works",{
   
 })
 
+test_that("hierarchical requery on non main attributes work",{
+  
+  # Text beginning with 'a'
+  sl1 = query(ae, "Phonetic == n")
+  
+  # requery to Word:Text
+  slRq = requery_hier(ae, sl1, level = 'Text')
+  
+  expect_equal(paste0(slRq$labels, collapse = "; "), 
+               "friends; considered; any; resistance; wind; violently; concealing; weaknesses; and; no; new; than")
+  
+})
+
+
 test_that("hierarchical throws warning if badly ordered/multiple levels",{
   # warning from various levels
   sl1 = query(ae, "Phonetic == n")

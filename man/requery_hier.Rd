@@ -4,9 +4,16 @@
 \alias{requery_hier}
 \title{Requery hierarchical context of a segment list in an emuDB}
 \usage{
-requery_hier(emuDBhandle, seglist, level, collapse = TRUE,
-  resultType = "tibble", calcTimes = TRUE,
-  timeRefSegmentLevel = NULL, verbose = FALSE)
+requery_hier(
+  emuDBhandle,
+  seglist,
+  level,
+  collapse = TRUE,
+  resultType = "tibble",
+  calcTimes = TRUE,
+  timeRefSegmentLevel = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

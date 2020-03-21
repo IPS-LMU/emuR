@@ -4,9 +4,16 @@
 \alias{export_BPFCollection}
 \title{Exports an emuDB into a BAS Partitur File (BPF) Collection}
 \usage{
-export_BPFCollection(handle, targetDir, extractLevels, refLevel = NULL,
-  verbose = TRUE, newLevels = NULL, newLevelClasses = NULL,
-  copyAudio = FALSE)
+export_BPFCollection(
+  handle,
+  targetDir,
+  extractLevels,
+  refLevel = NULL,
+  verbose = TRUE,
+  newLevels = NULL,
+  newLevelClasses = NULL,
+  copyAudio = FALSE
+)
 }
 \arguments{
 \item{handle}{handle to the emuDB}

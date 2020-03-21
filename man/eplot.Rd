@@ -4,10 +4,25 @@
 \alias{eplot}
 \title{Plot ellipses for two-dimensional data}
 \usage{
-eplot(x, labs, chars, formant = FALSE, scaling = "linear",
-  prob = 0.95, nsdev = NULL, dopoints = FALSE, doellipse = TRUE,
-  centroid = FALSE, axes = TRUE, xlim, ylim, col = TRUE,
-  lty = FALSE, lwd = NULL, ...)
+eplot(
+  x,
+  labs,
+  chars,
+  formant = FALSE,
+  scaling = "linear",
+  prob = 0.95,
+  nsdev = NULL,
+  dopoints = FALSE,
+  doellipse = TRUE,
+  centroid = FALSE,
+  axes = TRUE,
+  xlim,
+  ylim,
+  col = TRUE,
+  lty = FALSE,
+  lwd = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A two-columned matrix of data}

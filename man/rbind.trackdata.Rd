@@ -44,7 +44,7 @@ data object can not be rbind()ed.
    fund.rms.lax = rbind(vowlax.fund[1:10,], vowlax.rms[1:10,])
  
    #the combined track data object
-   #The first ten rows in \\$data keep vowlax.fund data, the 11th to last row keeps vowlax.rms data 
+   #The first ten rows in \$data keep vowlax.fund data, the 11th to last row keeps vowlax.rms data 
    fund.rms.lax
    
 

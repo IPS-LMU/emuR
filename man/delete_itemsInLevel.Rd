@@ -4,8 +4,12 @@
 \alias{delete_itemsInLevel}
 \title{Delete new items programmatically}
 \usage{
-delete_itemsInLevel(emuDBhandle, itemsToDelete, rewriteAllAnnots = TRUE,
-  verbose = TRUE)
+delete_itemsInLevel(
+  emuDBhandle,
+  itemsToDelete,
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

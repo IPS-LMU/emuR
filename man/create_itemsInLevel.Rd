@@ -4,8 +4,12 @@
 \alias{create_itemsInLevel}
 \title{Create new items programmatically}
 \usage{
-create_itemsInLevel(emuDBhandle, itemsToCreate, rewriteAllAnnots = TRUE,
-  verbose = TRUE)
+create_itemsInLevel(
+  emuDBhandle,
+  itemsToCreate,
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

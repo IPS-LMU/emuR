@@ -7,13 +7,22 @@
 \alias{remove_attrDefLabelGroup}
 \title{Add / List / Remove labelGroup to / of / from attributeDefinition of emuDB}
 \usage{
-add_attrDefLabelGroup(emuDBhandle, levelName, attributeDefinitionName,
-  labelGroupName, labelGroupValues)
+add_attrDefLabelGroup(
+  emuDBhandle,
+  levelName,
+  attributeDefinitionName,
+  labelGroupName,
+  labelGroupValues
+)
 
 list_attrDefLabelGroups(emuDBhandle, levelName, attributeDefinitionName)
 
-remove_attrDefLabelGroup(emuDBhandle, levelName, attributeDefinitionName,
-  labelGroupName)
+remove_attrDefLabelGroup(
+  emuDBhandle,
+  levelName,
+  attributeDefinitionName,
+  labelGroupName
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

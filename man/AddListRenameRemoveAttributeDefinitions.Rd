@@ -8,16 +8,32 @@
 \alias{remove_attributeDefinition}
 \title{Add / List / Rename / Remove attribute definition to / of / from emuDB}
 \usage{
-add_attributeDefinition(emuDBhandle, levelName, name, type = "STRING",
-  rewriteAllAnnots = TRUE, verbose = TRUE)
+add_attributeDefinition(
+  emuDBhandle,
+  levelName,
+  name,
+  type = "STRING",
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 
 list_attributeDefinitions(emuDBhandle, levelName)
 
-rename_attributeDefinition(emuDBhandle, origAttrDef, newAttrDef,
-  verbose = TRUE)
+rename_attributeDefinition(
+  emuDBhandle,
+  origAttrDef,
+  newAttrDef,
+  verbose = TRUE
+)
 
-remove_attributeDefinition(emuDBhandle, levelName, name, force = FALSE,
-  rewriteAllAnnots = TRUE, verbose = TRUE)
+remove_attributeDefinition(
+  emuDBhandle,
+  levelName,
+  name,
+  force = FALSE,
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

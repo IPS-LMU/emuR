@@ -4,8 +4,13 @@
 \alias{create_emuDB}
 \title{Create empty emuDB}
 \usage{
-create_emuDB(name, targetDir, mediaFileExtension = "wav", store = TRUE,
-  verbose = TRUE)
+create_emuDB(
+  name,
+  targetDir,
+  mediaFileExtension = "wav",
+  store = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{name}{of new emuDB}

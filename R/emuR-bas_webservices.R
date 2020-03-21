@@ -39,7 +39,7 @@
 ##' @param minniAttributeDefinitionName attribute name for the MINNI segmentation
 ##' @param sylAttributeDefinitionName attribute name for syllable segmentation
 ##' @param canoSylAttributeDefinitionName attribute name for syllabified canonical pronunciations of words
-##' @param runMINNI if set to \code{TRUE} (the default) the MINNI service is also run. As the MINNI serice contains
+##' @param runMINNI if set to \code{TRUE} (the default) the MINNI service is also run. As the MINNI service contains
 ##' less languages than the others it can be useful to turn this off.
 ##' @param patience If a web service call fails, it is repeated a further n times, with n being the value of patience.
 ##' Must be set to a value between 0 and 3.

@@ -4,8 +4,12 @@
 \alias{list_files}
 \title{List files of emuDB}
 \usage{
-list_files(emuDBhandle, fileExtension = ".*", sessionPattern = ".*",
-  bundlePattern = ".*")
+list_files(
+  emuDBhandle,
+  fileExtension = ".*",
+  sessionPattern = ".*",
+  bundlePattern = ".*"
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

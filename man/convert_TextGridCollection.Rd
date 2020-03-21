@@ -4,8 +4,15 @@
 \alias{convert_TextGridCollection}
 \title{Convert a TextGridCollection (e.g. .wav & .TextGrid files) to emuDB}
 \usage{
-convert_TextGridCollection(dir, dbName, targetDir, tgExt = "TextGrid",
-  audioExt = "wav", tierNames = NULL, verbose = TRUE)
+convert_TextGridCollection(
+  dir,
+  dbName,
+  targetDir,
+  tgExt = "TextGrid",
+  audioExt = "wav",
+  tierNames = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{path to directory containing the TextGridCollection (nested directory structures are permitted as the 
@@ -41,7 +48,7 @@ to automatically build a hierarchal structure.
 
 ##########################################################
 # prerequisite: directory containing .wav & .TextGrid files
-# (see \\code{?create_emuRdemoData} how to create demo data)
+# (see \code{?create_emuRdemoData} how to create demo data)
 
 # convert TextGridCollection and store 
 # new emuDB in folder provided by tempdir()

@@ -4,9 +4,16 @@
 \alias{runBASwebservice_g2pForPronunciation}
 \title{Creates canonical pronunciation attributes for a tier of tokenized orthographical words.}
 \usage{
-runBASwebservice_g2pForPronunciation(handle, orthoAttributeDefinitionName,
-  language, canoAttributeDefinitionName = "KAN", params = list(embed =
-  "maus"), patience = 0, resume = FALSE, verbose = TRUE)
+runBASwebservice_g2pForPronunciation(
+  handle,
+  orthoAttributeDefinitionName,
+  language,
+  canoAttributeDefinitionName = "KAN",
+  params = list(embed = "maus"),
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -49,12 +56,13 @@ afterwards. To disable MAUS embed mode, call this function with params=list(embe
 To derive IPA symbols, add outsym="ipa" to the parameter list.
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

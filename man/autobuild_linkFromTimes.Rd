@@ -4,10 +4,16 @@
 \alias{autobuild_linkFromTimes}
 \title{Autobuild links between two levels using their time information}
 \usage{
-autobuild_linkFromTimes(emuDBhandle, superlevelName, sublevelName,
-  rewriteAllAnnots = TRUE, convertSuperlevel = FALSE,
-  backupLevelAppendStr = "-autobuildBackup", newLinkDefType = NULL,
-  verbose = TRUE)
+autobuild_linkFromTimes(
+  emuDBhandle,
+  superlevelName,
+  sublevelName,
+  rewriteAllAnnots = TRUE,
+  convertSuperlevel = FALSE,
+  backupLevelAppendStr = "-autobuildBackup",
+  newLinkDefType = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

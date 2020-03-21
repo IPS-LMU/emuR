@@ -4,9 +4,17 @@
 \alias{query}
 \title{Query emuDB}
 \usage{
-query(emuDBhandle, query, sessionPattern = ".*", bundlePattern = ".*",
-  queryLang = "EQL2", timeRefSegmentLevel = NULL,
-  resultType = "tibble", calcTimes = TRUE, verbose = FALSE)
+query(
+  emuDBhandle,
+  query,
+  sessionPattern = ".*",
+  bundlePattern = ".*",
+  queryLang = "EQL2",
+  timeRefSegmentLevel = NULL,
+  resultType = "tibble",
+  calcTimes = TRUE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle object (see \link{load_emuDB})}
@@ -39,8 +47,8 @@ path to traverse on intersecting hierarchies. If set to \code{FALSE} (the defaul
 all paths will be traversed (= legacy EMU behaviour).}
 }
 \value{
-result set object of class resultType (default: \link{emuRsegs}, 
-compatible to legacy type \link{emusegs})
+result set object of class resultType (default: \link{tibble}, 
+compatible to legacy types \link{emuRsegs} and \link{emusegs})
 }
 \description{
 Function to query annotation items/structures in a emuDB

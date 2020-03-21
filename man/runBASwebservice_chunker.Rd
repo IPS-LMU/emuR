@@ -4,11 +4,19 @@
 \alias{runBASwebservice_chunker}
 \title{Creates a chunk segmentation using the webservice Chunker.}
 \usage{
-runBASwebservice_chunker(handle, canoAttributeDefinitionName, language,
-  chunkAttributeDefinitionName = "TRN", rootLevel = NULL,
-  orthoAttributeDefinitionName = NULL, params = list(force = "rescue"),
-  perspective = "default", patience = 0, resume = FALSE,
-  verbose = TRUE)
+runBASwebservice_chunker(
+  handle,
+  canoAttributeDefinitionName,
+  language,
+  chunkAttributeDefinitionName = "TRN",
+  rootLevel = NULL,
+  orthoAttributeDefinitionName = NULL,
+  params = list(force = "rescue"),
+  perspective = "default",
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -64,12 +72,13 @@ params=list(force="false"). To skip the normal chunking mode and go directly int
 mode, use params=list(force="true").
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

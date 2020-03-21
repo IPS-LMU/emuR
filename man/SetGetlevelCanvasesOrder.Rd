@@ -15,7 +15,7 @@ get_levelCanvasesOrder(emuDBhandle, perspectiveName)
 
 \item{perspectiveName}{name of perspective}
 
-\item{order}{character vector containig names of levelDefinitions}
+\item{order}{character vector containing names of levelDefinitions}
 }
 \description{
 Set / Get which levels of an emuDB to display as level canvases (in a 

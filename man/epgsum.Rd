@@ -4,8 +4,14 @@
 \alias{epgsum}
 \title{Sum contacts in palatograms.}
 \usage{
-epgsum(epgdata, profile = c(1, 3), inactive = FALSE, rows = 1:8,
-  columns = 1:8, trackname = "EPG-sum")
+epgsum(
+  epgdata,
+  profile = c(1, 3),
+  inactive = FALSE,
+  rows = 1:8,
+  columns = 1:8,
+  trackname = "EPG-sum"
+)
 }
 \arguments{
 \item{epgdata}{An eight-columned EPG-compressed trackdata object, or an

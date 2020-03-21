@@ -5,8 +5,7 @@
 \alias{by}
 \title{A method of the generic function by for objects of class \'trackdata\'}
 \usage{
-\method{by}{trackdata}(data, INDICES = NULL, FUN, ...,
-  simplify = FALSE)
+\method{by}{trackdata}(data, INDICES = NULL, FUN, ..., simplify = FALSE)
 }
 \arguments{
 \item{data}{a track data object}

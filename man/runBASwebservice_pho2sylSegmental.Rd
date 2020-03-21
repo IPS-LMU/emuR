@@ -4,10 +4,18 @@
 \alias{runBASwebservice_pho2sylSegmental}
 \title{Creates a syllable segmentation on the basis of a phonetic segmentation.}
 \usage{
-runBASwebservice_pho2sylSegmental(handle, segmentAttributeDefinitionName,
-  language, superLevel = NULL, sylAttributeDefinitionName = "MAS",
-  params = list(wsync = "yes"), perspective = "default",
-  patience = 0, resume = FALSE, verbose = TRUE)
+runBASwebservice_pho2sylSegmental(
+  handle,
+  segmentAttributeDefinitionName,
+  language,
+  superLevel = NULL,
+  sylAttributeDefinitionName = "MAS",
+  params = list(wsync = "yes"),
+  perspective = "default",
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -57,12 +65,13 @@ By default, Pho2Syl is run in word synchronized mode. To override this, call thi
 with the parameter params=list(wsync="no").
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()}
 }
 \concept{BAS webservice functions}

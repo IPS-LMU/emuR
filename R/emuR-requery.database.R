@@ -486,7 +486,6 @@ requery_hier <- function(emuDBhandle,
     reqAttrDefLn = get_levelNameForAttributeName(emuDBhandle, reqAttrDef)
     
     if(seglistAttrDefLn != reqAttrDefLn){
-      
       # insert all original emuRsegs items new table
       origSeglistItemsTableSuffix = "orig_seglist_items"
       create_intermResTmpQueryTablesDBI(emuDBhandle, 
@@ -537,7 +536,7 @@ requery_hier <- function(emuDBhandle,
                             "FROM items ",
                             "WHERE db_uuid ='", emuDBhandle$UUID, "' ",
                             " AND level = '", reqAttrDefLn, "'"))
-      
+
       # get hierarchy paths to check if going up or 
       # down the hierarchy (requery to parent or to child level)
       connectHierPaths = get_hierPathsConnectingLevels(emuDBhandle, 
@@ -574,7 +573,8 @@ requery_hier <- function(emuDBhandle,
                          preserveAnchorLength = preserveAnchorLength,
                          verbose = verbose) # result written to lr_exp_res_tmp table
       
-      # move query_databaseHier results into interm_res_items_tmp_root 
+      # move query_databaseHier results into interm_res_items_tmp_root
+      # and reset level back to requested attribute
       create_intermResTmpQueryTablesDBI(emuDBhandle)
       
       DBI::dbExecute(emuDBhandle$connection, 
@@ -586,7 +586,7 @@ requery_hier <- function(emuDBhandle,
                             " r_seq_start_id AS seq_start_id, ",
                             " r_seq_end_id AS seq_end_id, ",
                             " r_seq_len AS seq_len, ",
-                            " r_level AS level, ",
+                            " '", reqAttrDef, "' AS level, ",
                             " r_seq_start_seq_idx AS seq_start_seq_idx, ",
                             " r_seq_end_seq_idx AS seq_end_seq_idx ",
                             " FROM lr_exp_res_tmp"))

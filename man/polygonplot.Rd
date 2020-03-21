@@ -4,8 +4,18 @@
 \alias{polygonplot}
 \title{polygonplot}
 \usage{
-polygonplot(data, labels, order, formant = TRUE, axes = TRUE,
-  xlab = "", ylab = "", main = "", xlim, ylim)
+polygonplot(
+  data,
+  labels,
+  order,
+  formant = TRUE,
+  axes = TRUE,
+  xlab = "",
+  ylab = "",
+  main = "",
+  xlim,
+  ylim
+)
 }
 \arguments{
 \item{data}{data matrix}

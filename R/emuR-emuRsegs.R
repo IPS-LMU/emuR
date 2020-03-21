@@ -135,13 +135,18 @@ export_seglistToTxtCollection <- function(emuDBhandle,
                                    begin = seglist[i,]$start / 1000,
                                    end = seglist[i,]$end / 1000) # hardcoded mediaFileExt!
     
+    i_padded = stringr::str_pad(i, 
+                                width = stringr::str_length(nrow(seglist)),
+                                side = "left", 
+                                pad = "0")
+    
     wrassp::write.AsspDataObj(ado, 
                               file = file.path(targetDir_full, 
-                                               paste0("sl_rowIdx_", i, ".wav")))
+                                               paste0("sl_rowIdx_", i_padded, ".wav")))
     
     readr::write_file(seglist[i,]$labels, 
                       path = file.path(targetDir_full, 
-                                       paste0("sl_rowIdx_", i, ".txt")))
+                                       paste0("sl_rowIdx_", i_padded, ".txt")))
   }
   
   readr::write_csv(seglist, 

@@ -11,8 +11,13 @@ add_linkDefinition(emuDBhandle, type, superlevelName, sublevelName)
 
 list_linkDefinitions(emuDBhandle)
 
-remove_linkDefinition(emuDBhandle, superlevelName, sublevelName,
-  force = FALSE, verbose = TRUE)
+remove_linkDefinition(
+  emuDBhandle,
+  superlevelName,
+  sublevelName,
+  force = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

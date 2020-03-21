@@ -4,10 +4,16 @@
 \alias{convert_txtCollection}
 \title{Converts a collection of audio files and plain text transcriptions into an emuDB}
 \usage{
-convert_txtCollection(dbName, sourceDir, targetDir, txtExtension = "txt",
+convert_txtCollection(
+  dbName,
+  sourceDir,
+  targetDir,
+  txtExtension = "txt",
   mediaFileExtension = "wav",
-  attributeDefinitionName = "transcription", cleanWhitespaces = TRUE,
-  verbose = TRUE)
+  attributeDefinitionName = "transcription",
+  cleanWhitespaces = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dbName}{name of the new emuDB}

@@ -4,11 +4,20 @@
 \alias{serve}
 \title{Serve EMU database to EMU-webApp}
 \usage{
-serve(emuDBhandle, sessionPattern = ".*", bundlePattern = ".*",
-  seglist = NULL, host = "127.0.0.1", port = 17890,
+serve(
+  emuDBhandle,
+  sessionPattern = ".*",
+  bundlePattern = ".*",
+  seglist = NULL,
+  bundleListName = NULL,
+  host = "127.0.0.1",
+  port = 17890,
   autoOpenURL = "https://ips-lmu.github.io/EMU-webApp/?autoConnect=true",
-  browser = getOption("browser"), useViewer = TRUE, debug = FALSE,
-  debugLevel = 0)
+  browser = getOption("browser"),
+  useViewer = TRUE,
+  debug = FALSE,
+  debugLevel = 0
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}
@@ -18,6 +27,8 @@ serve(emuDBhandle, sessionPattern = ".*", bundlePattern = ".*",
 \item{bundlePattern}{A regular expression pattern matching bundle names to be served}
 
 \item{seglist}{segment list to use for times anchors and session + bundle restriction (type: \link{emuRsegs})}
+
+\item{bundleListName}{name of bundleList stored in emuDB/bundleLists subdir to send to EMU-webApp}
 
 \item{host}{host IP to listen to (default: 127.0.0.1  (localhost))}
 

@@ -4,11 +4,19 @@
 \alias{runBASwebservice_maus}
 \title{Runs MAUS webservice to create a phonetic segmentation}
 \usage{
-runBASwebservice_maus(handle, canoAttributeDefinitionName, language,
-  mausAttributeDefinitionName = "MAU", chunkLevel = NULL,
-  turnChunkLevelIntoItemLevel = TRUE, params = NULL,
-  perspective = "default", patience = 0, resume = FALSE,
-  verbose = TRUE)
+runBASwebservice_maus(
+  handle,
+  canoAttributeDefinitionName,
+  language,
+  mausAttributeDefinitionName = "MAU",
+  chunkLevel = NULL,
+  turnChunkLevelIntoItemLevel = TRUE,
+  params = NULL,
+  perspective = "default",
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -58,12 +66,13 @@ by the function \link{runBASwebservice_g2pForPronunciation}.
 All necessary level, link and attribute definitions are created in the process.
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_minni}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_minni}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

@@ -4,8 +4,17 @@
 \alias{epggs}
 \title{Plot a grey-scale image of palatographic data.}
 \usage{
-epggs(epgdata, gscale = 100, gridlines = TRUE, gridcol = "gray",
-  gridlty = 1, axes = TRUE, xlab = "", ylab = "", ...)
+epggs(
+  epgdata,
+  gscale = 100,
+  gridlines = TRUE,
+  gridcol = "gray",
+  gridlty = 1,
+  axes = TRUE,
+  xlab = "",
+  ylab = "",
+  ...
+)
 }
 \arguments{
 \item{epgdata}{An eight-columned EPG-compressed trackdata object, or an

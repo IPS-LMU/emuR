@@ -4,8 +4,15 @@
 \alias{locus}
 \title{Calculate locus equations for two-dimensional data}
 \usage{
-locus(target, onset, labels.vow = NULL, yxline = TRUE,
-  plotgraph = TRUE, axes = TRUE, ...)
+locus(
+  target,
+  onset,
+  labels.vow = NULL,
+  yxline = TRUE,
+  plotgraph = TRUE,
+  axes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{target}{a numerical vector typically of F2 values at the vowel target}

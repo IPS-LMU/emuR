@@ -44,7 +44,7 @@ function to obtain the dB values at those frequencies.
         mel(vec)
         
 
-        # convert the \\$data values in a trackdata object to mel
+        # convert the \$data values in a trackdata object to mel
         # create a new track data object
 
         t1 <- dip.fdat

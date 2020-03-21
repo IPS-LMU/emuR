@@ -4,8 +4,7 @@
 \alias{import_mediaFiles}
 \title{Import media files to emuDB}
 \usage{
-import_mediaFiles(emuDBhandle, dir, targetSessionName = "0000",
-  verbose = TRUE)
+import_mediaFiles(emuDBhandle, dir, targetSessionName = "0000", verbose = TRUE)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

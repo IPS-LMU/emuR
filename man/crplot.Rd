@@ -5,13 +5,32 @@
 \title{Function to plot a digital sinusoid and the circle from which it is
 derived.}
 \usage{
-crplot(A = 1, k = 1, p = 0, N = 16, const = NULL, figsize = 8,
-  npoints = 500, col = 1, cplot = TRUE, splot = TRUE,
-  numplot = TRUE, axes = TRUE, incircle = TRUE, arrow = TRUE,
-  linetype = 1, textplot = NULL, lineplot = NULL,
-  ylab = "Amplitude", super = NULL, xaxlab = NULL, type = "b",
-  xlab = "Time (number of points)", fconst = 3.5/3.1,
-  pointconst = 1.2)
+crplot(
+  A = 1,
+  k = 1,
+  p = 0,
+  N = 16,
+  const = NULL,
+  figsize = 8,
+  npoints = 500,
+  col = 1,
+  cplot = TRUE,
+  splot = TRUE,
+  numplot = TRUE,
+  axes = TRUE,
+  incircle = TRUE,
+  arrow = TRUE,
+  linetype = 1,
+  textplot = NULL,
+  lineplot = NULL,
+  ylab = "Amplitude",
+  super = NULL,
+  xaxlab = NULL,
+  type = "b",
+  xlab = "Time (number of points)",
+  fconst = 3.5/3.1,
+  pointconst = 1.2
+)
 }
 \arguments{
 \item{A}{Amplitude of the circle/sinusoid.}

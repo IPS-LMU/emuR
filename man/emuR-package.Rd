@@ -26,7 +26,7 @@ capabilities that extract data (e.g. formant values) which corresponds to the
 result of a query.
 
 For an introduction to the emuR package please see the \code{emuR_intro} vignette 
-by calling: \code{vignette('emuR_intro')}
+by calling: \code{vignette('emuR_intro')} 
 
 For information about the \code{emuDB} database format please see the \code{emuDB}
 vignette by calling: \code{vignette('emuDB')}

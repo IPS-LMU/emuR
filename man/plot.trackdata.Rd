@@ -4,9 +4,19 @@
 \alias{plot.trackdata}
 \title{Produces time-series plots from trackdata}
 \usage{
-\method{plot}{trackdata}(x, timestart = NULL, xlim = NULL,
-  ylim = NULL, labels = NULL, col = TRUE, lty = FALSE,
-  type = "p", pch = NULL, contig = TRUE, ...)
+\method{plot}{trackdata}(
+  x,
+  timestart = NULL,
+  xlim = NULL,
+  ylim = NULL,
+  labels = NULL,
+  col = TRUE,
+  lty = FALSE,
+  type = "p",
+  pch = NULL,
+  contig = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{A trackdata object.}

@@ -4,10 +4,17 @@
 \alias{runBASwebservice_minni}
 \title{Creates a rough phonetic segmentation by running the phoneme decoder webservice MINNI.}
 \usage{
-runBASwebservice_minni(handle, language,
-  minniAttributeDefinitionName = "MINNI", rootLevel = NULL,
-  params = list(), perspective = "default", patience = 0,
-  resume = FALSE, verbose = TRUE)
+runBASwebservice_minni(
+  handle,
+  language,
+  minniAttributeDefinitionName = "MINNI",
+  rootLevel = NULL,
+  params = list(),
+  perspective = "default",
+  patience = 0,
+  resume = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{handle}{emuDB handle}
@@ -50,12 +57,13 @@ pre-existing transcription.
 All necessary level, link and attribute definitions are created in the process.
 }
 \seealso{
-Other BAS webservice functions: \code{\link{runBASwebservice_all}},
-  \code{\link{runBASwebservice_chunker}},
-  \code{\link{runBASwebservice_g2pForPronunciation}},
-  \code{\link{runBASwebservice_g2pForTokenization}},
-  \code{\link{runBASwebservice_maus}},
-  \code{\link{runBASwebservice_pho2sylCanonical}},
-  \code{\link{runBASwebservice_pho2sylSegmental}}
+Other BAS webservice functions: 
+\code{\link{runBASwebservice_all}()},
+\code{\link{runBASwebservice_chunker}()},
+\code{\link{runBASwebservice_g2pForPronunciation}()},
+\code{\link{runBASwebservice_g2pForTokenization}()},
+\code{\link{runBASwebservice_maus}()},
+\code{\link{runBASwebservice_pho2sylCanonical}()},
+\code{\link{runBASwebservice_pho2sylSegmental}()}
 }
 \concept{BAS webservice functions}

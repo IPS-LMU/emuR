@@ -667,19 +667,6 @@ rename_bundles <- function(emuDBhandle, bundles){
   
   DBI::dbClearResult(statement)
 
-  # rename files
-  old_file_paths = list_files(emuDBhandle, 
-                              sessionPattern = paste0("(", paste(bundles$session, collapse = "|"), ")"),
-                              bundlePattern = paste0("(", paste(bundles$name, collapse = "|"), ")"))$absolute_file_path
-  
-  old_basenames = basename(old_file_paths)
-  
-  new_basenames = stringr::str_replace_all(old_basenames, 
-                                           setNames(bundles$name_new, bundles$name))
-  
-  file.rename(from = old_file_paths, 
-              to = file.path(dirname(old_file_paths), new_basenames))
-  
   # rename bundle dirs  
   old_bundle_paths = file.path(emuDBhandle$basePath,
                                paste0(bundles$session, session.suffix),
@@ -691,6 +678,21 @@ rename_bundles <- function(emuDBhandle, bundles){
   
   file.rename(from = old_bundle_paths, 
               to = new_bundle_paths)
+  
+  # rename files in bundles
+  for(i in 1:nrow(bundles)){
+    cur_bndl = bundles[i,]
+    old_files = list_files(emuDBhandle, bundlePattern = paste0("^", cur_bndl$name_new, "$"))
+    new_file_names = stringr::str_replace_all(old_files$file, cur_bndl$name, cur_bndl$name_new)
+    file.rename(from = file.path(emuDBhandle$basePath, 
+                                 paste0(old_files$session, session.suffix), 
+                                 paste0(old_files$bundle, bundle.dir.suffix),
+                                 old_files$file), 
+                to = file.path(emuDBhandle$basePath, 
+                               paste0(old_files$session, session.suffix), 
+                               paste0(old_files$bundle, bundle.dir.suffix),
+                               new_file_names))
+  }
   
   rewrite_annots(emuDBhandle)
   
@@ -934,7 +936,9 @@ create_emuDB <- function(name,
                          uuid::UUIDgenerate(), 
                          ":memory:")
   if(store){
-    store(dbHandle, targetDir=targetDir, verbose = verbose)
+    store(dbHandle, 
+          targetDir = targetDir, 
+          verbose = verbose)
   }
   
   return(invisible())

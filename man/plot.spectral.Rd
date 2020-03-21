@@ -4,9 +4,25 @@
 \alias{plot.spectral}
 \title{Plot spectra from EMU spectral objects}
 \usage{
-\method{plot}{spectral}(x, labs, ylim, xlim, col, lty, lwd, fun, freq,
-  type = "l", power = FALSE, powcoeffs = c(10, 10), dbnorm = FALSE,
-  dbcoeffs = c(0, 0), legend = TRUE, axes = TRUE, ...)
+\method{plot}{spectral}(
+  x,
+  labs,
+  ylim,
+  xlim,
+  col,
+  lty,
+  lwd,
+  fun,
+  freq,
+  type = "l",
+  power = FALSE,
+  powcoeffs = c(10, 10),
+  dbnorm = FALSE,
+  dbcoeffs = c(0, 0),
+  legend = TRUE,
+  axes = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{An EMU object of class 'spectral'}

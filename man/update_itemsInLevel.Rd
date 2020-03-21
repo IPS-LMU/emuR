@@ -4,8 +4,12 @@
 \alias{update_itemsInLevel}
 \title{Update items programmatically}
 \usage{
-update_itemsInLevel(emuDBhandle, itemsToUpdate, rewriteAllAnnots = TRUE,
-  verbose = TRUE)
+update_itemsInLevel(
+  emuDBhandle,
+  itemsToUpdate,
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

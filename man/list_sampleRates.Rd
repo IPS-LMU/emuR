@@ -4,8 +4,7 @@
 \alias{list_sampleRates}
 \title{List sample rates of media and annotation (_annot.json) files}
 \usage{
-list_sampleRates(emuDBhandle, sessionPattern = ".*",
-  bundlePattern = ".*")
+list_sampleRates(emuDBhandle, sessionPattern = ".*", bundlePattern = ".*")
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle object (see \link{load_emuDB})}

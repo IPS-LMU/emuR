@@ -7,10 +7,25 @@
 \title{A function to plot one or more columns of EMU-trackdata as a function of
 time}
 \usage{
-dplot(x, labs = NULL, offset = 0, prop = TRUE, average = FALSE,
-  xlim = NULL, ylim = NULL, lty = FALSE, normalise = FALSE,
-  colour = TRUE, lwd = NULL, pch = NULL, legend = "topright",
-  axes = TRUE, type = "l", n = 20, ...)
+dplot(
+  x,
+  labs = NULL,
+  offset = 0,
+  prop = TRUE,
+  average = FALSE,
+  xlim = NULL,
+  ylim = NULL,
+  lty = FALSE,
+  normalise = FALSE,
+  colour = TRUE,
+  lwd = NULL,
+  pch = NULL,
+  legend = "topright",
+  axes = TRUE,
+  type = "l",
+  n = 20,
+  ...
+)
 }
 \arguments{
 \item{x}{An EMU-trackdata object}

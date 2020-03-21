@@ -7,8 +7,7 @@
 \alias{remove_legalLabels}
 \title{Set / Get / Remove legal labels of attributeDefinition of emuDB}
 \usage{
-set_legalLabels(emuDBhandle, levelName, attributeDefinitionName,
-  legalLabels)
+set_legalLabels(emuDBhandle, levelName, attributeDefinitionName, legalLabels)
 
 get_legalLabels(emuDBhandle, levelName, attributeDefinitionName)
 

@@ -4,10 +4,20 @@
 \alias{convert_BPFCollection}
 \title{Convert a Bas Partitur File Collection (audio and BAS Partitur files) to an emuDB}
 \usage{
-convert_BPFCollection(sourceDir, targetDir, dbName, bpfExt = "par",
-  audioExt = "wav", extractLevels = NULL, refLevel = NULL,
-  newLevels = NULL, newLevelClasses = NULL,
-  segmentToEventLevels = NULL, unifyLevels = NULL, verbose = TRUE)
+convert_BPFCollection(
+  sourceDir,
+  targetDir,
+  dbName,
+  bpfExt = "par",
+  audioExt = "wav",
+  extractLevels = NULL,
+  refLevel = NULL,
+  newLevels = NULL,
+  newLevelClasses = NULL,
+  segmentToEventLevels = NULL,
+  unifyLevels = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{sourceDir}{path to the directory containing the Bas Partitur File collection}

@@ -7,13 +7,23 @@
 \alias{remove_levelDefinition}
 \title{Add / List / Remove level definition to / of / from emuDB}
 \usage{
-add_levelDefinition(emuDBhandle, name, type, rewriteAllAnnots = TRUE,
-  verbose = TRUE)
+add_levelDefinition(
+  emuDBhandle,
+  name,
+  type,
+  rewriteAllAnnots = TRUE,
+  verbose = TRUE
+)
 
 list_levelDefinitions(emuDBhandle)
 
-remove_levelDefinition(emuDBhandle, name, rewriteAllAnnots = TRUE,
-  force = FALSE, verbose = TRUE)
+remove_levelDefinition(
+  emuDBhandle,
+  name,
+  rewriteAllAnnots = TRUE,
+  force = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

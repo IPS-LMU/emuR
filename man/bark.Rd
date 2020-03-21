@@ -77,7 +77,7 @@ are removed in the case of spectral objects.
 
 
 
-        # convert the \\$data values in a trackdata object to Bark
+        # convert the \$data values in a trackdata object to Bark
 
         # create a new track data object
 

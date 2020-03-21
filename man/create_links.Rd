@@ -4,8 +4,7 @@
 \alias{create_links}
 \title{create links between items}
 \usage{
-create_links(emuDBhandle, links, rewriteAllAnnots = TRUE,
-  verbose = TRUE)
+create_links(emuDBhandle, links, rewriteAllAnnots = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

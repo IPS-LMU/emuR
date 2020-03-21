@@ -4,8 +4,7 @@
 \alias{matscan}
 \title{Read matrix data from a file}
 \usage{
-matscan(file, num.cols = utils::count.fields(file)[1], what = 0,
-  sk = 0)
+matscan(file, num.cols = utils::count.fields(file)[1], what = 0, sk = 0)
 }
 \arguments{
 \item{file}{A filename.}

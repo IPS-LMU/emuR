@@ -21,6 +21,8 @@ emuDBhandle = function(dbName,
   
   if(class(handle$connection) == "SQLiteConnection"){
     setSQLitePragmas(handle$connection)
+    # init regex
+    RSQLite::initRegExp(handle$connection)
   }
   
   if(connectionPath == ":memory:" 

@@ -4,9 +4,18 @@
 \alias{requery_seq}
 \title{Requery sequential context of segment list in an emuDB}
 \usage{
-requery_seq(emuDBhandle, seglist, offset = 0, offsetRef = "START",
-  length = 1, ignoreOutOfBounds = FALSE, resultType = "tibble",
-  calcTimes = TRUE, timeRefSegmentLevel = NULL, verbose = FALSE)
+requery_seq(
+  emuDBhandle,
+  seglist,
+  offset = 0,
+  offsetRef = "START",
+  length = 1,
+  ignoreOutOfBounds = FALSE,
+  resultType = "tibble",
+  calcTimes = TRUE,
+  timeRefSegmentLevel = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{emuDBhandle}{emuDB handle as returned by \code{\link{load_emuDB}}}

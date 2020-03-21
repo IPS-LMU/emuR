@@ -4,8 +4,13 @@
 \alias{load_emuDB}
 \title{Load emuDB}
 \usage{
-load_emuDB(databaseDir, inMemoryCache = FALSE, connection = NULL,
-  verbose = TRUE, ...)
+load_emuDB(
+  databaseDir,
+  inMemoryCache = FALSE,
+  connection = NULL,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{databaseDir}{directory of the emuDB}

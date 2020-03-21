@@ -26,6 +26,9 @@
 ##' @param bundlePattern A regular expression pattern matching bundle names to be exported from the database
 ##' @param attributeDefinitionNames list of names of attributeDefinitions that are to be 
 ##' exported as tiers. If set to NULL (the default) all attribute definitions will be exported as separate tiers.
+##' @param timeRefSegmentLevel parameter passed into \link{query} function. (set time segment level from which to derive time 
+##' information. It is only necessary to set this parameter if more than one child 
+##' level contains time information and the queried parent level is of type ITEM.)
 ##' @param verbose Show progress bars and further information
 ##' @export
 ##' @seealso \code{\link{load_emuDB}}
@@ -47,6 +50,7 @@ export_TextGridCollection <- function(emuDBhandle,
                                       sessionPattern = '.*', 
                                       bundlePattern = '.*', 
                                       attributeDefinitionNames = NULL, 
+                                      timeRefSegmentLevel = NULL,
                                       verbose = TRUE) {
   
   check_emuDBhandle(emuDBhandle)
@@ -60,7 +64,7 @@ export_TextGridCollection <- function(emuDBhandle,
     if(!all(attributeDefinitionNames %in% allAttrNames)){
       stop(paste0("Bad attributeDefinitionNames given! Valid ",
                   "attributeDefinitionNames of the emuDB are: ", 
-                  allAttrNames))
+                  paste0(allAttrNames, collapse = "; ")))
     }
     allAttrNames = attributeDefinitionNames
   }
@@ -87,6 +91,7 @@ export_TextGridCollection <- function(emuDBhandle,
     sl = query(emuDBhandle, 
                paste0(allAttrNames[i], "=~ .*"), 
                resultType = "emuRsegs", # still uses old emuRsegs obj
+               timeRefSegmentLevel = timeRefSegmentLevel,
                verbose = FALSE)
     slAll = dplyr::bind_rows(slAll, sl)
   }

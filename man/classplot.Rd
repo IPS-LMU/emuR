@@ -4,8 +4,18 @@
 \alias{classplot}
 \title{Produce a classification plot from discriminant or SVM modelling}
 \usage{
-classplot(model, xlim, ylim, N = 100, pch = 15, col = NULL,
-  legend = TRUE, position = "topright", bg = "gray90", ...)
+classplot(
+  model,
+  xlim,
+  ylim,
+  N = 100,
+  pch = 15,
+  col = NULL,
+  legend = TRUE,
+  position = "topright",
+  bg = "gray90",
+  ...
+)
 }
 \arguments{
 \item{model}{A two-dimensional training model output from qda(), lda() of

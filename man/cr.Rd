@@ -4,11 +4,26 @@
 \alias{cr}
 \title{Plot digital sinuoids.}
 \usage{
-cr(A = 1, k = 1, p = 0, N = 16, samfreq = NULL,
-  duration = NULL, const = NULL, expon = NULL, plotf = TRUE,
-  ylim = NULL, xlim = NULL, values = FALSE,
-  xlab = "Time (number of points)", ylab = "Amplitude", type = "b",
-  bw = NULL, dopoints = FALSE, ...)
+cr(
+  A = 1,
+  k = 1,
+  p = 0,
+  N = 16,
+  samfreq = NULL,
+  duration = NULL,
+  const = NULL,
+  expon = NULL,
+  plotf = TRUE,
+  ylim = NULL,
+  xlim = NULL,
+  values = FALSE,
+  xlab = "Time (number of points)",
+  ylab = "Amplitude",
+  type = "b",
+  bw = NULL,
+  dopoints = FALSE,
+  ...
+)
 }
 \arguments{
 \item{A}{A vector of amplitude values. Defaults to A = 1}

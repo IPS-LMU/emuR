@@ -4,9 +4,16 @@
 \alias{epgplot}
 \title{Plot palatographic data}
 \usage{
-epgplot(epgdata, select = NULL, numbering = "times",
-  gridlines = TRUE, mfrow = NULL, col = 1, mar = c(0.8, 0.1, 0.8,
-  0.1), xlim = NULL)
+epgplot(
+  epgdata,
+  select = NULL,
+  numbering = "times",
+  gridlines = TRUE,
+  mfrow = NULL,
+  col = 1,
+  mar = c(0.8, 0.1, 0.8, 0.1),
+  xlim = NULL
+)
 }
 \arguments{
 \item{epgdata}{An eight-columned EPG-compressed trackdata object, or an
