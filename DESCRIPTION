@@ -40,7 +40,8 @@ Imports:
     git2r(>= 0.23.0),
     mime(>= 0.6),
     rstudioapi(>= 0.10),
-    rlang
+    rlang,
+    openxlsx (>= 4.1.0)
 Suggests: 
     ggplot2(>= 2.1.0),
     testthat(>= 0.7.1.99),
