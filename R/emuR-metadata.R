@@ -56,13 +56,17 @@ coalesce <- function(...) {
 #'
 #' @examples
 #' \dontrun{
-#' demodir <- file.path(tempdir(),"emuR_demoData")
-#
 #' create_emuRdemoData()
-#'
-#' ae <- load_emuDB(file.path(demodir,"ae_emuDB"))
-#' articulator:::make_dummy_metafiles(ae)
-#' get_metadata(ae)
+#' ae <- load_emuDB(file.path(tempdir(),"emuR_demoData","ae_emuDB"))
+#' 
+#' # Database-wide default information
+#' add_metadata(ae,list("Accent"="Northern","Elicitation"="Scripted"))
+#' #Bundle specific information
+#' add_metadata(ae,list("Speaker.Sex"="Male","Date"="2020-03-04"),session="0000",bundle="msajc003")
+#' get_metadata(ae) -> res
+#' print(res)
+#' rm(ae)
+#' unlink(file.path(tempdir(),"emuR_demoData"),recursive=TRUE)
 #' }
 #'
 
@@ -86,7 +90,7 @@ export_metadata <- function(emuDBhandle,Excelfile=NULL,overwrite=FALSE){
   check_emuDBhandle(emuDBhandle)
 
   bundles <- list_bundles(emuDBhandle) %>%
-    rename(bundle=name)
+    dplyr::rename(bundle=name)
   metafiles <- list_files(emuDBhandle,fileExtension = metadata.extension)
   #Use the bundle list as a scaffold for a data fram to hold the content of all metadata files
   #  metacontent <- metafiles[c("bundle","absolute_file_path")]
@@ -112,7 +116,7 @@ export_metadata <- function(emuDBhandle,Excelfile=NULL,overwrite=FALSE){
   sessJSONFiles <- sessJSONFiles[! grepl(bundle.dir.suffix,sessJSONFiles) & grepl(session.suffix,sessJSONFiles)]
 
   sessions <- list_sessions(emuDBhandle) %>%
-    rename(session=name)
+    dplyr::rename(session=name)
 
   # Run only if there are session metadata files
   if(length(sessJSONFiles) > 0){
@@ -325,7 +329,7 @@ import_metadata <- function(emuDBhandle,Excelfile){
   #Write the bundle metadata files
   for(r in 1:nrow(towriteSess)){
     outFile <- file.path(emuDBhandle$basePath,
-                         paste0(towriteSess[r,"session"],session.suffix)
+                         paste0(towriteSess[r,"session"],session.suffix),
                          towriteSess[r,"session_metadata_file"])
     fileConn <- file(outFile)
     writeLines(as.character(towriteSess[r,"json"]), fileConn)
@@ -368,6 +372,20 @@ import_metadata <- function(emuDBhandle,Excelfile){
 #' @return
 #' @export
 #'
+#' @examples 
+#' \dontrun{
+#' create_emuRdemoData()
+#' ae <- load_emuDB(file.path(tempdir(),"emuR_demoData","ae_emuDB"))
+#' 
+#' # Database-wide default information
+#' add_metadata(ae,list("Accent"="Northern","Elicitation"="Scripted"))
+#' #Bundle specific information
+#' add_metadata(ae,list("Speaker.Sex"="Male","Date"="2020-03-04"),session="0000",bundle="msajc003")
+#' get_metadata(ae) -> res
+#' print(res)
+#' rm(ae)
+#' unlink(file.path(tempdir(),"emuR_demoData"),recursive=TRUE)
+#' }
 #'
 add_metadata <- function(emuDBhandle,metadataList,bundle=NULL,session=NULL, reset.before.add=FALSE){
 
@@ -455,11 +473,18 @@ add_metadata <- function(emuDBhandle,metadataList,bundle=NULL,session=NULL, rese
 #'
 #' @examples
 #' \dontrun{
-#' create_ae_db() -> ae
-#' add_digests(ae)
-#' export_metadata(ae,Excelfile = NULL) -> res
+#' create_emuRdemoData()
+#' ae <- load_emuDB(file.path(tempdir(),"emuR_demoData","ae_emuDB"))
+#' 
+#' #Add a md5 digest to the metadata of all bundles
+#' add_digests(ae,algorithm = "md5")
+#' 
+#' #Add a "sha1" checksum (the default) to some bundles
+#' add_digests(ae,bundlePattern = "msajc0.*")
+#' get_metadata(ae) -> res
 #' print(res)
-#' unlink_emuRDemoDir()
+#' rm(ae)
+#' unlink(file.path(tempdir(),"emuR_demoData"),recursive=TRUE)
 #' }
 #'
 add_digests <- function(emuDBhandle,sessionPattern=".*",bundlePattern=".*",algorithm="sha1"){
@@ -499,19 +524,27 @@ add_digests <- function(emuDBhandle,sessionPattern=".*",bundlePattern=".*",algor
 #'
 #' @examples
 #' \dontrun{
-#' ## This code just sets up a new emuR database and inserts some
-#' ## fake metadata into it.
-#' create_ae_db() -> ae_test
-#' make_dummy_metafiles(ae_test)
+#' create_emuRdemoData()
+#' ae <- load_emuDB(file.path(tempdir(),"emuR_demoData","ae_emuDB"))
+#' 
+#' # Database-wide default information
+#' add_metadata(ae,list("Accent"="Northern","Elicitation"="Scripted"))
+#' #Bundle specific information
+#' add_metadata(ae,list("Speaker.Sex"="Male","Date"="2020-03-04"),session="0000",bundle="msajc003")
+#' 
 #' # Get all the 'n' segments in the database
 #' query(ae_test,"Phonetic = n",resultType = "tibble") -> ae_nt
 #' # Add information related to the nature the recording sessions
 #' # e.g. the speaker ID, the date of the recording
-#' ae_nt %>% biographize(ae_test)
+#' ae_nt %>% biographize(ae_test) %>% glimpse()
 #' # This code does the same as the above, but it will also compute new
 #' # information that is strictly  aimed at identifying the recording
 #' # (length of recording (in ms) and a sha1 digest of the wav file).
-#' ae_nt %>% biographize(ae_test,compute_digests=TRUE,algorithm="sha1")
+#' ae_nt %>% 
+#'    biographize(ae_test,compute_digests=TRUE,algorithm="sha1") %>% 
+#'    glimpse()
+#' rm(ae)
+#' unlink(file.path(tempdir(),"emuR_demoData"),recursive=TRUE)
 #' }
 #'
 biographize <- function(segs_tbl,emuDBhandle,compute_digests=FALSE,algorithm="sha1") {
