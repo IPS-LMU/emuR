@@ -1,5 +1,5 @@
 Package: emuR
-Version: 2.5.0
+Version: 2.5.1.9000
 Date: 2024-03-15
 Title: Main Package of the EMU Speech Database Management System
 Authors@R: c(

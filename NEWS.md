@@ -1,3 +1,9 @@
+# emuR 2.5.1
+
+## new features / performance tweaks / improvements
+
+## bug fixes
+
 # emuR 2.5.0
 
 ## new features / performance tweaks / improvements
