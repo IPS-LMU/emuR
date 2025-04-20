@@ -48,11 +48,13 @@ Suggests:
     testthat(>= 0.7.1.99),
     compare(>= 0.2.4),
     knitr(>= 1.7),
-    rmarkdown(>= 0.9.2)
+    rmarkdown(>= 0.9.2),
+    matlabr,
+    R.matlab
 Encoding: UTF-8
 LazyLoad: yes
 LazyData: yes
 ZipData: no
 URL: https://github.com/IPS-LMU/emuR, https://ips-lmu.github.io/The-EMU-SDMS-Manual/
 BugReports: https://github.com/IPS-LMU/emuR/issues
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
