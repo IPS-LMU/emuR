@@ -80,23 +80,9 @@ add_signalViaMatlab = function(emuDBhandle,
   }
 
   listOfFiles =
-    list_files(emuDBhandle, inputFileExtension) %>%
-    mutate(inputFilename        = absolute_file_path,
-           outputFilename       = paste(emuDBhandle$basePath,
-                                        paste0(session, session.suffix),
-                                        paste0(bundle,  bundle.dir.suffix),
-                                        paste0(bundle,  ".", outputFileExtension),
-                                        sep = .Platform$file.sep),
-           intermediateDir      = paste(tempdir(),
-                                        "add_signalViaMatlab",
-                                        emuDBhandle$UUID,
-                                        paste0(session, session.suffix),
-                                        sep = .Platform$file.sep),
-           intermediateFilename = paste(intermediateDir,
-                                        paste0(bundle, ".mat"),
-                                        sep = .Platform$file.sep))
-
-  fs::dir_create(path = listOfFiles$intermediateDir, recurse = TRUE)
+    listOfFilesForExternalSignalProcessing("add_signalViaMatlab",
+                                           emuDBhandle,
+                                           inputFileExtension)
 
   filenameParameters =
     listOfFiles %>%
@@ -156,6 +142,32 @@ add_signalViaMatlab = function(emuDBhandle,
                           columnName = trackColumn,
                           fileExtension = outputFileExtension,
                           fileFormat = "Rda")
+}
+
+
+listOfFilesForExternaSignalProcessing = function(functionName,
+                                                 emuDBhandle,
+                                                 inputFileExtension) {
+  listOfFiles =
+    list_files(emuDBhandle, inputFileExtension) %>%
+    mutate(inputFilename        = absolute_file_path,
+           outputFilename       = paste(emuDBhandle$basePath,
+                                        paste0(session, session.suffix),
+                                        paste0(bundle,  bundle.dir.suffix),
+                                        paste0(bundle,  ".", outputFileExtension),
+                                        sep = .Platform$file.sep),
+           intermediateDir      = paste(tempdir(),
+                                        functionName,
+                                        emuDBhandle$UUID,
+                                        paste0(session, session.suffix),
+                                        sep = .Platform$file.sep),
+           intermediateFilename = paste(intermediateDir,
+                                        paste0(bundle, ".mat"),
+                                        sep = .Platform$file.sep))
+
+  fs::dir_create(path = listOfFiles$intermediateDir, recurse = TRUE)
+
+  return(listOfFiles)
 }
 
 
