@@ -2,6 +2,9 @@
 
 ## new features / performance tweaks / improvements
 
+* Documentation: Include package anchors in links for CRAN’s new HTML reference manuals
+* `add_signalVia...()`: Drafting a new family of functions that allows users to use signal procissing from outside Wrassp; starting with Matlab
+
 ## bug fixes
 
 # emuR 2.5.0
