@@ -546,7 +546,7 @@
       }
       else
       {
-        warning("Cached results were used")
+        message("Cached results were used")
         customFunctionRes = trackCache[[mediaPath]]
       }
       
