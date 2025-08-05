@@ -55,6 +55,7 @@
 #' @param oneMatlabFunctionCallPerFile Whether to call `matlabFunctionName` once per file (TRUE) or once for the entire database (FALSE).
 #' @param inputFileExtension The file extension of the files to operate on. Defaults to the standard media file extension of the current Emu database.
 #' @param matlabFunctionParameters Data frame with parameters for `matlabFunctionName`. Needs to contain the columns `session` and `bundle` plus one column for each function parameter. The column names will be used as parameter names. Must contain *one row for every bundle, without exception*.
+#' @param paths_to_add List of paths where Matlab will look for functions. This is usually handled by `matlabr::run_matlab_code`, but it adds the paths *after* the code, so we need to handle it in `emuR`.
 #' @param ... Other parameters are passed on to `matlabr::run_matlab_code`. The most interesting part there might be `paths_to_add`.
 #'
 #' @export
@@ -66,6 +67,7 @@ add_signalViaMatlab = function(emuDBhandle,
                                oneMatlabFunctionCallPerFile = TRUE,
                                inputFileExtension = NULL,
                                matlabFunctionParameters = NULL,
+                               paths_to_add = NULL,
                                ...) {
   # By "using" these variables, we make them required arguments in terms of R UI:
   emuDBhandle
@@ -132,7 +134,15 @@ add_signalViaMatlab = function(emuDBhandle,
                               ")"))
   }
 
-  matlabr::run_matlab_code(matlabCommands$command,
+  # This is a workaround: I could just pass paths_to_add on to run_matlab_code,
+  # but it adds the paths *after* the code, which cannot work.
+  code = matlabCommands$command
+  if (!is.null(paths_to_add)) {
+    paths_to_add = matlabr::add_path(paths_to_add)
+    code = c(paths_to_add, code)
+  }
+  
+  matlabr::run_matlab_code(code,
                            endlines = TRUE,
                            ...)
 
