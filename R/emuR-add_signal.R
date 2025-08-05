@@ -151,19 +151,16 @@ listOfFilesForExternalSignalProcessing = function(functionName,
   listOfFiles =
     list_files(emuDBhandle, inputFileExtension) %>%
     mutate(inputFilename        = absolute_file_path,
-           outputFilename       = paste(emuDBhandle$basePath,
-                                        paste0(session, session.suffix),
-                                        paste0(bundle,  bundle.dir.suffix),
-                                        paste0(bundle,  ".", outputFileExtension),
-                                        sep = .Platform$file.sep),
-           intermediateDir      = paste(tempdir(),
-                                        functionName,
-                                        emuDBhandle$UUID,
-                                        paste0(session, session.suffix),
-                                        sep = .Platform$file.sep),
-           intermediateFilename = paste(intermediateDir,
-                                        paste0(bundle, ".mat"),
-                                        sep = .Platform$file.sep))
+           outputFilename       = file.path(emuDBhandle$basePath,
+                                            paste0(session, session.suffix),
+                                            paste0(bundle,  bundle.dir.suffix),
+                                            paste0(bundle,  ".", outputFileExtension)),
+           intermediateDir      = file.path(tempdir(),
+                                            functionName,
+                                            emuDBhandle$UUID,
+                                            paste0(session, session.suffix)),
+           intermediateFilename = file.path(intermediateDir,
+                                            paste0(bundle, ".mat")))
 
   fs::dir_create(path = listOfFiles$intermediateDir, recurse = TRUE)
 
