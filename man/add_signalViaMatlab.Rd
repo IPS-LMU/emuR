@@ -119,10 +119,12 @@ Matlab is a trademark of The MathWorks, Inc.
 }
 \examples{
 
+\dontrun{
 ###########################
 # Setting up some demo data
 
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(emuR)
 base_dir = tempdir()
 emuR::create_emuRdemoData(base_dir)
@@ -139,7 +141,10 @@ add_signalViaMatlab(emuDBhandle = emuDBhandle,
                     outputFileExtension = "sound",
                     trackName = "unchangedSound",
                     trackColumn = "data[,1]", 
-                    paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+                    paths_to_add = c(file.path(base_dir,
+                                               "emuR_demoData",
+                                               "add_signal_scripts",
+                                               "matlab")))
                     
 # paths_to_add tells Matlab where to find the demoSignalScalerForOneFile function.
 # This will create a new track definition called unchangedSound. The track’s
@@ -174,7 +179,7 @@ ggplot(td_new) +
 
 bundleList = 
   emuR::list_bundles(emuDBhandle = emuDBhandle) \%>\% 
-  rename(bundle = name)
+  dplyr::rename(bundle = name)
 parameterList =
   bundleList \%>\% 
   mutate(scalingFactor = case_match(bundle,
@@ -187,7 +192,10 @@ add_signalViaMatlab(emuDBhandle = emuDBhandle,
                     trackName = "scaledSound",
                     trackColumn = "data[,1]",
                     matlabFunctionParameters = parameterList,
-                    paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+                    paths_to_add = c(file.path(base_dir,
+                                               "emuR_demoData",
+                                               "add_signal_scripts",
+                                               "matlab")))
 
 # This will create a new track definition called scaledSound:
 
@@ -213,6 +221,7 @@ ggplot(td_scaled) +
   facet_grid(vars(paste(session, bundle))) +
   geom_line() +
   ggtitle("Three sound signals, with different scaling factors applied")
+}
 
 
 }

@@ -70,10 +70,12 @@
 #'
 #' @examples
 #' 
+#' \dontrun{
 #' ###########################
 #' # Setting up some demo data
 #' 
-#' library(tidyverse)
+#' library(dplyr)
+#' library(ggplot2)
 #' library(emuR)
 #' base_dir = tempdir()
 #' emuR::create_emuRdemoData(base_dir)
@@ -90,7 +92,10 @@
 #'                     outputFileExtension = "sound",
 #'                     trackName = "unchangedSound",
 #'                     trackColumn = "data[,1]", 
-#'                     paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+#'                     paths_to_add = c(file.path(base_dir,
+#'                                                "emuR_demoData",
+#'                                                "add_signal_scripts",
+#'                                                "matlab")))
 #'                     
 #' # paths_to_add tells Matlab where to find the demoSignalScalerForOneFile function.
 #' # This will create a new track definition called unchangedSound. The track’s
@@ -125,7 +130,7 @@
 #' 
 #' bundleList = 
 #'   emuR::list_bundles(emuDBhandle = emuDBhandle) %>% 
-#'   rename(bundle = name)
+#'   dplyr::rename(bundle = name)
 #' parameterList =
 #'   bundleList %>% 
 #'   mutate(scalingFactor = case_match(bundle,
@@ -138,7 +143,10 @@
 #'                     trackName = "scaledSound",
 #'                     trackColumn = "data[,1]",
 #'                     matlabFunctionParameters = parameterList,
-#'                     paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+#'                     paths_to_add = c(file.path(base_dir,
+#'                                                "emuR_demoData",
+#'                                                "add_signal_scripts",
+#'                                                "matlab")))
 #'
 #' # This will create a new track definition called scaledSound:
 #' 
@@ -164,6 +172,7 @@
 #'   facet_grid(vars(paste(session, bundle))) +
 #'   geom_line() +
 #'   ggtitle("Three sound signals, with different scaling factors applied")
+#' }
 #'
 #'
 #' @param emuDBhandle The Emu database to work on.
@@ -219,7 +228,7 @@ add_signalViaMatlab = function(emuDBhandle,
 
   filenameParameters =
     listOfFiles %>%
-    select(session, bundle, inputFilename, outputFilename = intermediateFilename) %>%
+    dplyr::select(.data$session, .data$bundle, .data$inputFilename, outputFilename = .data$intermediateFilename) %>%
     encodeStringsAsMatlabLiterals()
 
   if (is.null(matlabFunctionParameters)) {
@@ -231,37 +240,37 @@ add_signalViaMatlab = function(emuDBhandle,
   }
 
   matlabCommands =
-    left_join(filenameParameters,
-              matlabFunctionParameters,
-              by = c("session", "bundle")) %>%
-    select(-session, -bundle)
+    dplyr::left_join(filenameParameters,
+                     matlabFunctionParameters,
+                     by = c("session", "bundle")) %>%
+    dplyr::select(-.data$session, -.data$bundle)
 
   if (oneMatlabFunctionCallPerFile) {
     matlabCommands =
       matlabCommands %>%
       makeKeyValuePairs() %>%
-      unite("allParameters",
-            everything(),
-            sep = ", ") %>%
-      mutate(command = paste0(matlabFunctionName,
-                              "(",
-                              allParameters,
-                              ")"))
+      tidyr::unite("allParameters",
+                   tidyselect::everything(),
+                   sep = ", ") %>%
+      dplyr::mutate(command = paste0(matlabFunctionName,
+                                     "(",
+                                     .data$allParameters,
+                                     ")"))
   } else {
     matlabCommands =
       matlabCommands %>%
-      summarise(across(everything(),
-                       ~ paste0(.x, collapse = ", ")),
-                across(everything(),
-                       ~ paste0("[", .x, "]"))) %>%
+      dplyr::summarise(dplyr::across(tidyselect::everything(),
+                              ~ paste0(.x, collapse = ", ")),
+                       dplyr::across(tidyselect::everything(),
+                              ~ paste0("[", .x, "]"))) %>%
       makeKeyValuePairs() %>%
-      unite("allParameters",
-            everything(),
-            sep = ", ") %>%
-      mutate(command = paste0(matlabFunctionName,
-                              "(",
-                              allParameters,
-                              ")"))
+      tidyr::unite("allParameters",
+                   tidyselect::everything(),
+                   sep = ", ") %>%
+      dplyr::mutate(command = paste0(matlabFunctionName,
+                                     "(",
+                                     .data$allParameters,
+                                     ")"))
   }
 
   # This is a workaround: I could just pass paths_to_add on to run_matlab_code,
@@ -292,17 +301,17 @@ listOfFilesForExternalSignalProcessing = function(functionName,
                                                   outputFileExtension) {
   listOfFiles =
     list_files(emuDBhandle, inputFileExtension) %>%
-    mutate(inputFilename        = absolute_file_path,
-           outputFilename       = file.path(emuDBhandle$basePath,
-                                            paste0(session, session.suffix),
-                                            paste0(bundle,  bundle.dir.suffix),
-                                            paste0(bundle,  ".", outputFileExtension)),
-           intermediateDir      = file.path(tempdir(),
-                                            functionName,
-                                            emuDBhandle$UUID,
-                                            paste0(session, session.suffix)),
-           intermediateFilename = file.path(intermediateDir,
-                                            paste0(bundle, ".mat")))
+    dplyr::mutate(inputFilename        = .data$absolute_file_path,
+                  outputFilename       = file.path(emuDBhandle$basePath,
+                                                   paste0(.data$session, session.suffix),
+                                                   paste0(.data$bundle,  bundle.dir.suffix),
+                                                   paste0(.data$bundle,  ".", outputFileExtension)),
+                  intermediateDir      = file.path(tempdir(),
+                                                   functionName,
+                                                   emuDBhandle$UUID,
+                                                   paste0(.data$session, session.suffix)),
+                  intermediateFilename = file.path(.data$intermediateDir,
+                                                   paste0(.data$bundle, ".mat")))
 
   fs::dir_create(path = listOfFiles$intermediateDir, recurse = TRUE)
 
@@ -351,17 +360,17 @@ encodeStringsAsMatlabLiterals = function(matlabFunctionParameters) {
       next
     }
 
-    columnType = typeof(pull(matlabFunctionParameters, column))
+    columnType = typeof(dplyr::pull(matlabFunctionParameters, column))
 
     if (columnType == "character") {
       matlabFunctionParameters[column] =
-        str_replace_all(pull(matlabFunctionParameters, column),
-                        '"',
-                        '""')
+        stringr::str_replace_all(dplyr::pull(matlabFunctionParameters, column),
+                                 '"',
+                                 '""')
 
       matlabFunctionParameters[column] =
         paste0('"',
-               pull(matlabFunctionParameters, column),
+               dplyr::pull(matlabFunctionParameters, column),
                '"')
     }
   }
@@ -383,7 +392,7 @@ makeKeyValuePairs = function(data) {
 
     data[column] = paste0(column,
                           "=",
-                          pull(data, column))
+                          dplyr::pull(data, column))
   }
 
   return(data)
