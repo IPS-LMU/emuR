@@ -39,6 +39,28 @@ create_emuRdemoData <- function(dir = tempdir(), precache = FALSE){
   if(!created){
     stop("Couldn't created ", ddPath)
   }
+  
+  #################################
+  # create scripts
+  matlabSourcePaths = list.files(file.path(path2data, "rawDemoData", "scriptFiles"),
+                                 pattern = ".m$",
+                                 full.names = TRUE)
+  
+  scriptsDestinationPath = file.path(ddPath, "add_signal_scripts")
+  matlabDestinationPath  = file.path(scriptsDestinationPath, "matlab")
+  
+  created = dir.create(scriptsDestinationPath)
+  if(!created){
+    stop("Couldn't create ", scriptsDestinationPath)
+  }
+  created = dir.create(matlabDestinationPath)
+  if(!created){
+    stop("Couldn't create ", matlabDestinationPath)
+  }
+  
+  file.copy(matlabSourcePaths, matlabDestinationPath)
+
+  
   #################################
   # create ae
   configPath = list.files(path2data, 
