@@ -39,7 +39,7 @@ parent level is of type ITEM.}
 hierarchies. If set to \code{FALSE} (the default) all paths will be traversed (= legacy EMU behaviour).}
 }
 \value{
-result set object of class \link{emuRsegs} or \link{tibble}
+result set object of class \link{emuRsegs} or \link[tibble]{tibble}
 }
 \description{
 Function to requery the hierarchical context of a segment list queried from an emuDB

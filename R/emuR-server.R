@@ -33,7 +33,7 @@ check_tibbleForServe <- function(tbl){
 ##' \item Disconnect and stop the server with the 'Clear' button of 
 ##' the webapp or the reload button of your browser.
 ##' \item The server can also be stopped by 
-##' calling \code{\link{stopAllServers}} of the \link{httpuv} package
+##' calling \code{\link[httpuv]{stopAllServers}} of the \link[httpuv]{httpuv} package
 ##' }
 ##' 
 ##' Hints:

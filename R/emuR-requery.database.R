@@ -100,7 +100,7 @@ check_tibbleForRequery <- function(tbl){
 ##' @param verbose be verbose. Set this to \code{TRUE} if you wish to choose which 
 ##' path to traverse on intersecting hierarchies. If set to \code{FALSE} (the 
 ##' default) all paths will be traversed (= legacy EMU behaviour).
-##' @return result set object of class \link{emuRsegs} or \link{tibble}
+##' @return result set object of class \link{emuRsegs} or \link[tibble]{tibble}
 ##' @export
 ##' @seealso \code{\link{query}} \code{\link{requery_hier}} \code{\link{emuRsegs}}
 ##' @keywords emuDB database requery
@@ -393,7 +393,7 @@ requery_seq <- function(emuDBhandle,
 ##' parent level is of type ITEM.
 ##' @param verbose be verbose. Set this to \code{TRUE} if you wish to choose which path to traverse on intersecting 
 ##' hierarchies. If set to \code{FALSE} (the default) all paths will be traversed (= legacy EMU behaviour).
-##' @return result set object of class \link{emuRsegs} or \link{tibble}
+##' @return result set object of class \link{emuRsegs} or \link[tibble]{tibble}
 ##' @export
 ##' @seealso \code{\link{query}} \code{\link{requery_seq}} \code{\link{emuRsegs}}
 ##' @keywords emuDB database requery

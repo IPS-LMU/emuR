@@ -11,7 +11,7 @@
 ##' replaces the deprecated \code{emu.track} function. Note that an warning is issued
 ##' if the bundles in the \code{\link{emuRsegs}} or \code{\link{emusegs}} object 
 ##' have in-homogeneous sampling rates as this could lead to inconsistent/erroneous
-##' \code{\link{trackdata}}, \code{\link{emuRtrackdata}} or \code{\link{tibble}} result objects. For 
+##' \code{\link{trackdata}}, \code{\link{emuRtrackdata}} or \code{\link[tibble]{tibble}} result objects. For 
 ##' more information on the structural elements of an emuDB 
 ##' see the signal data extraction chapter of the EMU-SDMS manual 
 ##' (\url{https://ips-lmu.github.io/The-EMU-SDMS-Manual/chap-sigDataExtr.html}).
@@ -24,7 +24,7 @@
 ##' emuDB). If the parameter \code{onTheFlyFunctionName} is set, then 
 ##' this corresponds to the column name af the AsspDataObj (see
 ##' \code{wrassp::wrasspOutputInfos[[onTheFlyFunctionName]]$tracks} and 
-##' \code{\link{wrasspOutputInfos}} - NOTE: \code{library(wrassp)} might be 
+##' \code{\link[wrassp]{wrasspOutputInfos}} - NOTE: \code{library(wrassp)} might be 
 ##' necessary to access the \code{wrasspOutputInfos} object without the \code{wrassp::} prefix). 
 ##' If the parameter \code{onTheFlyFunctionName} is set and this one isn't, then per default
 ##' the first track listed in the \code{wrassp::wrasspOutputInfos} is chosen 
@@ -60,7 +60,7 @@
 ##' \code{get_trackdata} and allows for most data formats to be used within an emuDB.
 ##' @param resultType Specify class of returned object. Either \code{"emuRtrackdata"}, 
 ##' \code{"trackdata"} or \code{"tibble"} == the default  (see \code{\link{trackdata}}, \code{\link{emuRtrackdata}} 
-##' and \code{\link{tibble}} for details about these objects).
+##' and \code{\link[tibble]{tibble}} for details about these objects).
 ##' @param consistentOutputType Prevent converting the output object to a \code{data.frame} 
 ##' depending on the \code{npoint} and \code{cut} arguments (only applies to output 
 ##' type "trackdata"). Set to \code{FALSE} if the following legacy \code{emu.track} output 

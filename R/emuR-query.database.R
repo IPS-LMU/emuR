@@ -2000,7 +2000,7 @@ query_databaseWithEqlEmuRsegs <- function(emuDBhandle,
 ##' Time information of symbolic elements (type 'ITEM') are derived from linked SEGMENT 
 ##' levels if available. If multiple linked SEGMENT levels exist, you can specify the 
 ##' level with the \code{timeRefSegmentLevel} argument. If time and sample values cannot be 
-##' derived they will be set to \code{\link{NA}}. \link{tibble}s will 
+##' derived they will be set to \code{\link{NA}}. \link[tibble]{tibble}s will 
 ##' be ordered by the columns UUID, session, bundle and sequence index (seq_idx). 
 ##' Legacy \link{emusegs} lists are ordered by the columns utts and start.
 ##' The query may be limited to session and/or bundle names specified by regular 
@@ -2026,7 +2026,7 @@ query_databaseWithEqlEmuRsegs <- function(emuDBhandle,
 ##' @param verbose be verbose. Set this to \code{TRUE} if you wish to choose which 
 ##' path to traverse on intersecting hierarchies. If set to \code{FALSE} (the default) 
 ##' all paths will be traversed (= legacy EMU behavior).
-##' @return result set object of class resultType (default: \link{tibble}, 
+##' @return result set object of class resultType (default: \link[tibble]{tibble}, 
 ##' compatible to legacy types \link{emuRsegs} and \link{emusegs})
 ##' @export
 ##' @seealso \code{\link{load_emuDB}}
