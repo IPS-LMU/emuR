@@ -82,7 +82,8 @@ add_signalViaMatlab = function(emuDBhandle,
   listOfFiles =
     listOfFilesForExternalSignalProcessing("add_signalViaMatlab",
                                            emuDBhandle,
-                                           inputFileExtension)
+                                           inputFileExtension,
+                                           outputFileExtension)
 
   filenameParameters =
     listOfFiles %>%
@@ -147,7 +148,8 @@ add_signalViaMatlab = function(emuDBhandle,
 
 listOfFilesForExternalSignalProcessing = function(functionName,
                                                   emuDBhandle,
-                                                  inputFileExtension) {
+                                                  inputFileExtension,
+                                                  outputFileExtension) {
   listOfFiles =
     list_files(emuDBhandle, inputFileExtension) %>%
     mutate(inputFilename        = absolute_file_path,
