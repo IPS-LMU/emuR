@@ -20,7 +20,7 @@
 ##' they are treated as labels of the reference level rather than independent items. At the moment, only purely symbolic 
 ##' (class 1) levels can be unified. Links between the reference level and levels in unifyLevels must be one-to-one.
 ##' @param newLevels optional vector containing names of levels in the BPF collection that are not part of the standard 
-##' BPF levels. See \url{http://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
+##' BPF levels. See \url{https://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
 ##' standard BPF levels.
 ##' @param newLevelClasses optional vector containing the classes of levels in the newLevels vector as integers. 
 ##' Must have the same length and order as newLevels.

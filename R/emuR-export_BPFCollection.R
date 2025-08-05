@@ -11,7 +11,7 @@
 ##' matching BPF keys, e.g. extractLevels = list(SampleRate="SAM", Text="ORT", Phonemes="SAP")
 ##' @param refLevel optional name of level (not label!) used as reference for symbolic links. If NULL (the default), a link-less BPF collection is created.
 ##' @param newLevels optional vector containing names of levels in the BPF collection that are not part of the standard 
-##' BPF levels. See \url{http://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
+##' BPF levels. See \url{https://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
 ##'standard BPF levels.
 ##' @param newLevelClasses optional vector containing the classes of levels in the newLevels vector as integers. 
 ##' Must have the same length and order as newLevels.

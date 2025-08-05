@@ -25,7 +25,7 @@ performed using EMU's own EQL2 (EMU Query Language Version 2).
 This package is part of the next iteration of the EMU Speech Database Management System 
 which aims to be as close to an all-in-one solution for generating, manipulating, querying, 
 analyzing and managing speech databases as possible. 
-For an overview of the system please see [http://ips-lmu.github.io/EMU.html](http://ips-lmu.github.io/EMU.html) and/or [https://www.sciencedirect.com/science/article/pii/S0885230816302601](https://www.sciencedirect.com/science/article/pii/S0885230816302601)
+For an overview of the system please see [http://ips-lmu.github.io/EMU.html](http://ips-lmu.github.io/EMU.html) and/or [https://doi.org/10.1016/j.csl.2017.01.002](https://doi.org/10.1016/j.csl.2017.01.002)
  .
 
 

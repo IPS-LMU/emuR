@@ -28,7 +28,7 @@ matching BPF keys, e.g. extractLevels = list(SampleRate="SAM", Text="ORT", Phone
 \item{verbose}{display infos, warnings and show progress bar}
 
 \item{newLevels}{optional vector containing names of levels in the BPF collection that are not part of the standard 
-BPF levels. See \url{http://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
+BPF levels. See \url{https://www.bas.uni-muenchen.de/forschung/Bas/BasFormatseng.html#Partitur_tiersdef} for details on 
 standard BPF levels.}
 
 \item{newLevelClasses}{optional vector containing the classes of levels in the newLevels vector as integers. 
