@@ -15,9 +15,6 @@ function [] = demoSignalScalerForManyFiles(options)
     end
 
     for index = 1:size(options.inputFilename, 2)
-        disp(index)
-        disp(options.inputFilename(1, index))
-
         % Metadata that will be stored in the results file:
         % This comment should succinctly describe the signal processing your Matlab script runs.
         comment    = "Demo Signal Scaler for many files";
