@@ -117,3 +117,102 @@ called via \code{\link[matlabr:run_matlab_code]{matlabr::run_matlab_code()}}.
 
 Matlab is a trademark of The MathWorks, Inc.
 }
+\examples{
+
+###########################
+# Setting up some demo data
+
+library(tidyverse)
+library(emuR)
+base_dir = tempdir()
+emuR::create_emuRdemoData(base_dir)
+emuDBhandle = emuR::load_emuDB(file.path(base_dir,
+                                         "emuR_demoData",
+                                         "ae_emuDB"))
+segmentList = query(emuDBhandle, "Phonetic == ei")
+
+#########################################################
+# Calling a Matlab function without additional parameters
+
+add_signalViaMatlab(emuDBhandle = emuDBhandle,
+                    matlabFunctionName = "demoSignalScalerForOneFile",
+                    outputFileExtension = "sound",
+                    trackName = "unchangedSound",
+                    trackColumn = "data[,1]", 
+                    paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+                    
+# paths_to_add tells Matlab where to find the demoSignalScalerForOneFile function.
+# This will create a new track definition called unchangedSound. The track’s
+# file format will be Rda. All files for this track will have the extension
+# .sound and will contain the new signal within the variable data[,1].
+
+list_ssffTrackDefinitions(emuDBhandle)
+
+# The "new" signal will just be a copy of the sound signal, because we have not
+# included a scalingFactor parameter. Therefore, demoSignalScalerForOneFile will
+# read the wav files and output them mostly unchanged (the values may be on a
+# different scale). You can check it like this:
+
+td_media = get_trackdata(emuDBhandle, segmentList, "MEDIAFILE_SAMPLES")
+td_new   = get_trackdata(emuDBhandle, segmentList, "unchangedSound")
+
+ggplot(td_media) +
+  aes(x = times_rel, y = T1) +
+  facet_grid(vars(paste(session, bundle))) +
+  geom_line() +
+  ggtitle("Three sound signals, original")
+ggplot(td_new) +
+  aes(x = times_rel, y = T1) +
+  facet_grid(vars(paste(session, bundle))) +
+  geom_line() +
+  ggtitle("Three sound signals, output by Matlab at new scale")
+  
+# Observe that the two graphs look the same except for the scale.
+
+###########################################
+# Calling a Matlab function with parameters
+
+bundleList = 
+  emuR::list_bundles(emuDBhandle = emuDBhandle) \%>\% 
+  rename(bundle = name)
+parameterList =
+  bundleList \%>\% 
+  mutate(scalingFactor = case_match(bundle,
+                                    "msajc022" ~ 4,
+                                    "msajc023" ~ 2,
+                                    .default = 1))
+add_signalViaMatlab(emuDBhandle = emuDBhandle,
+                    matlabFunctionName = "demoSignalScalerForOneFile",
+                    outputFileExtension = "sound2",
+                    trackName = "scaledSound",
+                    trackColumn = "data[,1]",
+                    matlabFunctionParameters = parameterList,
+                    paths_to_add = c(file.path(base_dir, "emuR_demoData", "add_signal_scripts", "matlab")))
+
+# This will create a new track definition called scaledSound:
+
+list_ssffTrackDefinitions(emuDBhandle)
+
+# The "new" signal will be a copy of the original sound signals, but two bundles
+# will be scaled up (multiplied by a given factor). The scaling factor was determined
+# through the parameterList data frame, which contained a column scalingFactor.
+# If the Matlab function expected other parameters, the data frame would have to
+# contain columns accordingly. You can see that two of the bundles have changed
+# their scale, but the shape is still the same:
+
+td_media  = get_trackdata(emuDBhandle, segmentList, "MEDIAFILE_SAMPLES")
+td_scaled = get_trackdata(emuDBhandle, segmentList, "scaledSound")
+
+ggplot(td_media) +
+  aes(x = times_rel, y = T1) +
+  facet_grid(vars(paste(session, bundle))) +
+  geom_line() +
+  ggtitle("Three sound signals, original")
+ggplot(td_scaled) +
+  aes(x = times_rel, y = T1) +
+  facet_grid(vars(paste(session, bundle))) +
+  geom_line() +
+  ggtitle("Three sound signals, with different scaling factors applied")
+
+
+}
