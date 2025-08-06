@@ -90,8 +90,8 @@
 #' add_signalViaMatlab(emuDBhandle = emuDBhandle,
 #'                     matlabFunctionName = "demoSignalScalerForOneFile",
 #'                     outputFileExtension = "sound",
-#'                     trackName = "unchangedSound",
-#'                     trackColumn = "data[,1]", 
+#'                     trackNames = c("unchangedSound"),
+#'                     trackColumns = c("data[,1]"),
 #'                     paths_to_add = c(file.path(base_dir,
 #'                                                "emuR_demoData",
 #'                                                "add_signal_scripts",
@@ -140,8 +140,8 @@
 #' add_signalViaMatlab(emuDBhandle = emuDBhandle,
 #'                     matlabFunctionName = "demoSignalScalerForOneFile",
 #'                     outputFileExtension = "sound2",
-#'                     trackName = "scaledSound",
-#'                     trackColumn = "data[,1]",
+#'                     trackNames = c("scaledSound"),
+#'                     trackColumns = c("data[,1]"),
 #'                     matlabFunctionParameters = parameterList,
 #'                     paths_to_add = c(file.path(base_dir,
 #'                                                "emuR_demoData",
@@ -180,9 +180,11 @@
 #'        Must be available on Matlab’s search path; see `paths_to_add`.
 #' @param outputFileExtension The file extension for the new derived signal file
 #'        to be created within each bundle.
-#' @param trackName The name of the new track that will be created automatically.
-#' @param trackColumn The column of data to be used from the result files generated
-#'        by Matlab. Should usually start with `data[` or `data$`.
+#' @param trackNames The names of the new tracks that will be created automatically.
+#'        Should reflect the signal data produced by the Matlab function.
+#' @param trackColumns The column of data to be used from the result files generated
+#'        by Matlab. Each value should usually start with `data[` or `data$`, depending
+#'        on the output produced by the Matlab function.
 #' @param oneMatlabFunctionCallPerFile Whether to call `matlabFunctionName` once
 #'        per file (TRUE) or once for the entire database (FALSE). `FALSE` will
 #'        be necessary if you want Matlab to process bundles in parallel.
@@ -201,8 +203,8 @@
 add_signalViaMatlab = function(emuDBhandle,
                                matlabFunctionName,
                                outputFileExtension,
-                               trackName,
-                               trackColumn,
+                               trackNames,
+                               trackColumns,
                                oneMatlabFunctionCallPerFile = TRUE,
                                inputFileExtension = NULL,
                                matlabFunctionParameters = NULL,
@@ -212,8 +214,14 @@ add_signalViaMatlab = function(emuDBhandle,
   emuDBhandle
   matlabFunctionName
   outputFileExtension
-  trackName
-  trackColumn
+  trackNames
+  trackColumns
+  
+  if (length(trackNames) != length(trackColumns)) {
+    stop(paste("trackNames and trackColumns must have the same length but they do not:",
+               length(trackNames),
+               length(trackColumns)))
+  }
 
   if (is.null(inputFileExtension)) {
     DBconfig = load_DBconfig(emuDBhandle)
@@ -287,11 +295,15 @@ add_signalViaMatlab = function(emuDBhandle,
 
   convertMatlabIntermediateFilesToRda(listOfFiles)
 
-  add_ssffTrackDefinition(emuDBhandle = emuDBhandle,
-                          name = trackName,
-                          columnName = trackColumn,
-                          fileExtension = outputFileExtension,
-                          fileFormat = "Rda")
+  if (length(trackNames) > 0) {
+    for (index in 1:length(trackNames)) {
+      add_ssffTrackDefinition(emuDBhandle = emuDBhandle,
+                              name = trackNames[index],
+                              columnName = trackColumns[index],
+                              fileExtension = outputFileExtension,
+                              fileFormat = "Rda")
+    }
+  }
 }
 
 
