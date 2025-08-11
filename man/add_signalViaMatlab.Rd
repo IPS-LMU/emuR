@@ -46,8 +46,8 @@ each function parameter. The column names will be used as parameter names.
 Must contain \emph{one row for every bundle, without exception}.}
 
 \item{paths_to_add}{List of paths where Matlab will look for functions. This
-is usually handled by \link[matlabr:run_matlab_code]{matlabr::run_matlab_code}, but it adds the paths
-\emph{after} the code, so we need to handle it in \code{emuR}.}
+will be combined with a path to a small number of Matlab functions
+bundled with emuR.}
 
 \item{...}{Other parameters are passed on to \link[matlabr:run_matlab_code]{matlabr::run_matlab_code}.}
 }

@@ -195,8 +195,8 @@
 #'        each function parameter. The column names will be used as parameter names.
 #'        Must contain *one row for every bundle, without exception*.
 #' @param paths_to_add List of paths where Matlab will look for functions. This
-#'        is usually handled by [matlabr::run_matlab_code], but it adds the paths
-#'        *after* the code, so we need to handle it in `emuR`.
+#'        will be combined with a path to a small number of Matlab functions
+#'        bundled with emuR.
 #' @param ... Other parameters are passed on to [matlabr::run_matlab_code].
 #'
 #' @export
@@ -281,13 +281,17 @@ add_signalViaMatlab = function(emuDBhandle,
                                      ")"))
   }
 
-  # This is a workaround: I could just pass paths_to_add on to run_matlab_code,
-  # but it adds the paths *after* the code, which cannot work.
-  code = matlabCommands$command
-  if (!is.null(paths_to_add)) {
-    paths_to_add = matlabr::add_path(paths_to_add)
-    code = c(paths_to_add, code)
+  builtin_matlab_paths = system.file("scripts/matlab/",
+                                     package = "emuR")
+
+  if (is.null(paths_to_add)) {
+    paths_to_add = builtin_matlab_paths
+  } else {
+    paths_to_add = c(builtin_matlab_paths, paths_to_add)
   }
+  paths_to_add = sapply(paths_to_add, matlabr::add_path)
+
+  code = c(paths_to_add, matlabCommands$command)
   
   matlabr::run_matlab_code(code,
                            endlines = TRUE,
