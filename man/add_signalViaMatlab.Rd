@@ -75,7 +75,7 @@ the new file must be a \code{.mat} file containing the variables \code{data},
 }
 
 You can find examples of Matlab functions that meet these requirements by running
-\code{\link[=create_emuRdemoData]{create_emuRdemoData()}} and then looking at the subdirectory \verb{add_signal_files/matlab/}.
+\code{\link[=create_emuRdemoData]{create_emuRdemoData()}} and then looking at the subdirectory \verb{add_signal_scripts/matlab/}.
 
 The Matlab function can accept more parameters to influence the signal
 processing. These parameters need not be the same values for the entire

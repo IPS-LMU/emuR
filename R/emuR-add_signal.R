@@ -22,7 +22,7 @@
 #'   `sampleRate`, `startTime`, `units`, and `comment`.
 #'
 #' You can find examples of Matlab functions that meet these requirements by running
-#' [create_emuRdemoData()] and then looking at the subdirectory `add_signal_files/matlab/`.
+#' [create_emuRdemoData()] and then looking at the subdirectory `add_signal_scripts/matlab/`.
 #'
 #' The Matlab function can accept more parameters to influence the signal
 #' processing. These parameters need not be the same values for the entire

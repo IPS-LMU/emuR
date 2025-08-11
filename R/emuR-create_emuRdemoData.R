@@ -42,7 +42,7 @@ create_emuRdemoData <- function(dir = tempdir(), precache = FALSE){
   
   #################################
   # create scripts
-  matlabSourcePaths = list.files(file.path(path2data, "rawDemoData", "scriptFiles"),
+  matlabSourcePaths = list.files(system.file("scripts/matlab/", package="emuR"),
                                  pattern = ".m$",
                                  full.names = TRUE)
   
