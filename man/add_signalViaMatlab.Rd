@@ -8,8 +8,8 @@ add_signalViaMatlab(
   emuDBhandle,
   matlabFunctionName,
   outputFileExtension,
-  trackName,
-  trackColumn,
+  trackNames,
+  trackColumns,
   oneMatlabFunctionCallPerFile = TRUE,
   inputFileExtension = NULL,
   matlabFunctionParameters = NULL,
@@ -26,10 +26,12 @@ Must be available on Matlab’s search path; see \code{paths_to_add}.}
 \item{outputFileExtension}{The file extension for the new derived signal file
 to be created within each bundle.}
 
-\item{trackName}{The name of the new track that will be created automatically.}
+\item{trackNames}{The names of the new tracks that will be created automatically.
+Should reflect the signal data produced by the Matlab function.}
 
-\item{trackColumn}{The column of data to be used from the result files generated
-by Matlab. Should usually start with \verb{data[} or \verb{data$}.}
+\item{trackColumns}{The column of data to be used from the result files generated
+by Matlab. Each value should usually start with \verb{data[} or \verb{data$}, depending
+on the output produced by the Matlab function.}
 
 \item{oneMatlabFunctionCallPerFile}{Whether to call \code{matlabFunctionName} once
 per file (TRUE) or once for the entire database (FALSE). \code{FALSE} will
@@ -139,8 +141,8 @@ segmentList = query(emuDBhandle, "Phonetic == ei")
 add_signalViaMatlab(emuDBhandle = emuDBhandle,
                     matlabFunctionName = "demoSignalScalerForOneFile",
                     outputFileExtension = "sound",
-                    trackName = "unchangedSound",
-                    trackColumn = "data[,1]", 
+                    trackNames = c("unchangedSound"),
+                    trackColumns = c("data[,1]"),
                     paths_to_add = c(file.path(base_dir,
                                                "emuR_demoData",
                                                "add_signal_scripts",
@@ -189,8 +191,8 @@ parameterList =
 add_signalViaMatlab(emuDBhandle = emuDBhandle,
                     matlabFunctionName = "demoSignalScalerForOneFile",
                     outputFileExtension = "sound2",
-                    trackName = "scaledSound",
-                    trackColumn = "data[,1]",
+                    trackNames = c("scaledSound"),
+                    trackColumns = c("data[,1]"),
                     matlabFunctionParameters = parameterList,
                     paths_to_add = c(file.path(base_dir,
                                                "emuR_demoData",
