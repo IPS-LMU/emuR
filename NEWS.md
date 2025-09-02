@@ -1,5 +1,13 @@
 # emuR (development version)
 
+# emuR 2.5.2
+
+## new features / performance tweaks / improvements
+
+* `add_signalVia...()`: Minor iteration on the function signatures
+
+## bug fixes
+
 # emuR 2.5.1
 
 ## new features / performance tweaks / improvements
