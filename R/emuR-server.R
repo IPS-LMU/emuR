@@ -1003,16 +1003,17 @@ rdaTrackToSsffRaw <- function(rdaPath,
   storage.mode(dat) <- "integer"   # INT16
   
   sr <- get("sampleRate", envir = env)
+  startTime <- get("startTime", envir = env)
   
   ## --- 2. Neues AsspDataObj bauen ---
   ado <- list()
-  ado[[trackName]] <- dat
+  ado[[columnExpr]] <- dat
   class(ado) <- "AsspDataObj"
   
   attr(ado, "trackFormats") <- "INT16"
   attr(ado, "sampleRate")   <- sr
   attr(ado, "origFreq")     <- sr
-  attr(ado, "startTime")    <- 0
+  attr(ado, "startTime")    <- startTime
   attr(ado, "startRecord")  <- 1L
   attr(ado, "endRecord")    <- nrow(dat)
   
