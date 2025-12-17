@@ -25,7 +25,7 @@ Imports:
     uuid,
     base64enc,
     shiny,
-    wrassp (>= 0.1.4),
+    wrassp (>= 1.0.6),
     jsonlite (>= 1.6.1),
     RSQLite (>= 2.0.0),
     DBI (>= 0.3.1),

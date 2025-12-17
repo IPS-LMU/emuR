@@ -482,9 +482,10 @@ serve <- function(emuDBhandle,
             cat("\n")
           }
           
+          
           ssffFiles = list()
           
-          # Liste der tatsächlich genutzten Track-Definitionen
+          # List all track definitions actually in use in EMU-webApp
           tracksInUseDefs = list()
           for (ssffTr in DBconfig$ssffTrackDefinitions) {
             if (ssffTr[["name"]] %in% ssffTrackNmsInUse) {
@@ -492,27 +493,23 @@ serve <- function(emuDBhandle,
             }
           }
           
-          # Fallunterscheidung: Für jeden Track entscheiden: echtes SSFF-File lesen oder aus Rda generieren
           for (tr in tracksInUseDefs) {
-            fe  = tr[["fileExtension"]]
-            fmt = tr[["fileFormat"]]
-            if (is.null(fmt))
-              fmt = "ssff"   # Default
+            fileExtension  = tr[["fileExtension"]]
+            fileFormat = tr[["fileFormat"]]
+            if (is.null(fileFormat))
+              fileFormat = "ssff"   # Default
             
-            trackName   = tr[["name"]]
-            columnExpr  = tr[["columnName"]]  # z.B. "data$audio"
-            ssffFileExt = fe                  # wird ans EMU-webApp-Protokoll gesendet
+            trackName         = tr[["name"]]
+            columnExpression  = tr[["columnName"]]  # e.g. "data$audio"
             
-            # Pfad zur zugrunde liegenden Datei (SSFF oder Rda-Container)
             trackFilePath = normalizePath(file.path(
               emuDBhandle$basePath,
               paste0(bundleSess, session.suffix),
               paste0(bundleName, bundle.dir.suffix),
-              paste0(bundleName, ".", fe)
+              paste0(bundleName, ".", fileExtension)
             ),
             mustWork = FALSE)
             
-            ### Fehlermeldung wenn der Pfad nicht funtioniert
             if (!file.exists(trackFilePath)) {
               err = simpleError(paste0(
                 "Track file not found for track '",
@@ -523,30 +520,23 @@ serve <- function(emuDBhandle,
               break
             }
             
-            if (identical(fmt, "Rda")) {
-              # ---------- Rda → SSFF on-the-fly convertierung----------
-              
-              
-              
+            if (identical(fileFormat, "Rda")) {
+              # ---------- Rda → SSFF on-the-fly conversion ----------
               mfData = tryCatch(
-                rdaTrackToSsffRaw(
-                  rdaPath    = trackFilePath,
-                  trackDef   = tr,
-                  trackName  = trackName,
-                  columnExpr = columnExpr,
-                  DBconfig   = DBconfig
+                rdaTrackToSsff(
+                  rdaPath          = trackFilePath,
+                  columnExpression = columnExpression
                 ),
                 error = function(e) {
                   err <<- e
                   NULL
                 }
               )
-              cat ("Sucessful conversion")
               if (!is.null(err))
                 break
               
             } else {
-              # ---------- klassischer SSFF-Fall wie bisher ----------
+              # ---------- SSFF file, no conversion ----------
               mf = tryCatch(
                 file(trackFilePath, "rb"),
                 error = function(e) {
@@ -565,11 +555,10 @@ serve <- function(emuDBhandle,
               }
             }
             
-            # ab hier wie bisher: in Base64 einpacken und an WebApp schicken
             mfDataBase64 = base64enc::base64encode(mfData)
             ssffDatObj = list(encoding      = "BASE64",
                               data          = mfDataBase64,
-                              fileExtension = ssffFileExt)
+                              fileExtension = fileExtension)
             ssffFiles[[length(ssffFiles) + 1L]] = ssffDatObj
             
           }
@@ -978,54 +967,44 @@ guess_type <- function (path)
 }
 
 
-#' Erzeugt aus einem Rda-Track (Container) eine SSFF-Datei im Speicher
+#' Converts a signal track from Rda to SSFF
+#' 
+#' The SSFF track briefly hits the disk, but the return value of this function is in-memory only.
 #'
-#' @param rdaPath Pfad zur .audio_Rda / .artsigsn_..._Rda Datei
-#' @param trackDef Ein Eintrag aus DBconfig$ssffTrackDefinitions (name, columnName, ...)
-#' @param trackName Logischer Track-Name (für Debug-Ausgaben)
-#' @param columnExpr Zeichenkette wie "data$audio" oder "data$velumgridsigUS"
-#' @param DBconfig komplette DBconfig (für Fallback-SampleRate)
-#' @return raw Vektor: fertige SSFF-Datei, bereit für base64encode()
-rdaTrackToSsffRaw <- function(rdaPath,
-                              trackDef,
-                              trackName,
-                              columnExpr,
-                              DBconfig) {
-  ## --- 1. RDA laden ---
-  env <- new.env(parent = emptyenv())
-  load(rdaPath, envir = env)
+#' @param rdaPath Path to the Rda file containing the signal track
+#' @param columnExpression The R expression needed to extract the desired signal data from the Rda file, for example `data$audio` or `data$velumgridsigUS`
+#' @return Raw contents of an SSFF-encoded file
+rdaTrackToSsff <- function(rdaPath,
+                           columnExpression) {
+  ## --- 1. Load Rda file ---
+  rdaFileEnvironment = rlang::new_environment()
+  load(rdaPath, envir = rdaFileEnvironment)
   
-  dAll <- get("data", envir = env)
-  dat  <- eval(parse(text = columnExpr)[[1]], envir = list(data = dAll))
+  allDataFromRdaFile <- rdaFileEnvironment$data
+  requestedData <- eval(parse(text = columnExpression)[[1]], envir = list(data = allDataFromRdaFile))
+  requestedData <- as.matrix(requestedData)
   
-  # Matrix forcieren
-  dat <- as.matrix(dat)
-  storage.mode(dat) <- "integer"   # INT16
-  
-  sr <- get("sampleRate", envir = env)
-  startTime <- get("startTime", envir = env)
-  
-  ## --- 2. Neues AsspDataObj bauen ---
+  ## --- 2. Build new AsspDataObj from scratch ---
   ado <- list()
-  ado[[columnExpr]] <- dat
   class(ado) <- "AsspDataObj"
+  ado = wrassp::addTrack(dobj = ado,
+                         trackname = columnExpression,
+                         data = requestedData,
+                         format = "REAL64")
   
-  attr(ado, "trackFormats") <- "INT16"
-  attr(ado, "sampleRate")   <- sr
-  attr(ado, "origFreq")     <- sr
-  attr(ado, "startTime")    <- startTime
-  attr(ado, "startRecord")  <- 1L
-  attr(ado, "endRecord")    <- nrow(dat)
+  attr(ado, "sampleRate")   <- rdaFileEnvironment$sampleRate
+  attr(ado, "origFreq")     <- rdaFileEnvironment$originalFrequency
+  attr(ado, "startTime")    <- rdaFileEnvironment$startTime
   
-  # fileInfo: 20 Bytes Header, 1 Track
-  attr(ado, "fileInfo") <- c(20L, 1L)
   
-  ## --- 3. Schreiben ---
+  ## --- 3. Write temporary file ---
+  wrassp::AsspFileFormat(ado) = "SSFF"
+  wrassp::AsspDataFormat(ado) = "binary"
   tmpPath <- tempfile(fileext = ".ssff")
   on.exit(unlink(tmpPath), add = TRUE)
   
   wrassp::write.AsspDataObj(ado, file = tmpPath)
   
-  ## --- 4. raw zurückgeben ---
+  ## --- 4. Return raw SSFF file contents ---
   readBin(tmpPath, "raw", file.info(tmpPath)$size)
 }
