@@ -59,4 +59,4 @@ LazyData: yes
 ZipData: no
 URL: https://github.com/IPS-LMU/emuR, https://ips-lmu.github.io/The-EMU-SDMS-Manual/
 BugReports: https://github.com/IPS-LMU/emuR/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
