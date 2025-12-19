@@ -11,7 +11,7 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
  * We failed to check 0 packages
 
 
-## Package anchors in \links
+## Fixed example
 
-Added package anchors to \links as appropriate.
-(CRAN wants this fixed by 2025-09-03).
+Fixed example in buildtrack() that was breaking in R-devel.
+(CRAN wants this fixed before 2026-01-12).
