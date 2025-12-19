@@ -1,5 +1,13 @@
 # emuR (development version)
 
+## new features / performance tweaks / improvements
+
+* `serve()` now supports signal tracks in Rda format by converting them on-the-fly to SSFF (thanks to Lilly)
+
+## bug fixes
+
+* Fixed the example in `buildtrack()`; it produces nonsense results and it is going to break in the next version of R
+
 # emuR 2.5.2
 
 ## new features / performance tweaks / improvements
