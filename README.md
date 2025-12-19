@@ -48,18 +48,39 @@ most people should already have on their systems.
 
 For more information see the [The EMU-SDMS Manual](https://ips-lmu.github.io/The-EMU-SDMS-Manual/)
 
-## For Developers / Beta-Testers
+## For Beta Testers
 
 ### Installation (two alternative methods)
 
-* either download & extract the package from GitHub. Then install it with the following command: 
-```r
-install.packages("path/to/emuR", repos = NULL, type="source")
-```
-
-* or install the latest development version from GitHub (**preferred method**):
+* Either install the latest development version from GitHub using the devtools package (**preferred method**):
 ```r
 library(devtools)
 install_github("IPS-LMU/emuR", build_vignettes = TRUE)
 ```
 
+* Or download the package from GitHub manually, then install it with the following command:
+```r
+install.packages("path/to/emuR", repos = NULL, type="source")
+```
+
+## For Developers
+
+Prerequisite: Docker is installed on your machine
+
+### Build and check package using Docker image rocker/r-devel
+
+- Pull current r-devel image: `docker pull rocker/r-devel`
+- Check if pull worked: `docker images`
+- Check R version in image: `docker run --rm rocker/r-devel:latest R --version`
+- Check R-devel version in image: `docker run --rm rocker/r-devel:latest RD --version`
+- Run a container with an interactive shell, mounting the emuR project folder (that is, the current directory) and a named docker volume for the output tarball:
+  `docker run --name emuR-checks -ti -v $(pwd):/source -v r_packages:/output rocker/r-devel:latest bash`
+
+In the interactive shell you just started:
+
+- Manually install OS dependencies (this might need a bit of tweaking): `apt update && apt install --yes r-cran-tidyverse r-cran-uuid r-cran-base64enc r-cran-shiny r-cran-rsqlite r-cran-dbi r-cran-httpuv r-cran-mime r-cran-v8 r-cran-tidyselect r-cran-mass r-cran-testthat r-cran-knitr r-cran-rmarkdown`
+- Manually install R dependencies (this might also need a bit of tweaking): `RD -e "install.packages(c('wrassp', 'compare', 'matlabr', 'R.matlab'))"`
+  Most R packages are actually installed as OS dependency via apt to save compilation time
+- Build: `RD CMD build --resave-data source/`
+- Check: `R_LIBS_SITE="/usr/lib/R/site-library" RD CMD check --as-cran emuR_*.tar.gz`
+- Copy the built package to the named docker volume, so it can be shared with other containers that might, for example, run additional checks: `cp emuR_*.tar.gz /output`
