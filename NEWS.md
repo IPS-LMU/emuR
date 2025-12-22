@@ -1,3 +1,5 @@
+# emuR (development version)
+
 # emuR 2.6.0
 
 ## new features / performance tweaks / improvements
