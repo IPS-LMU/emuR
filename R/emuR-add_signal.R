@@ -23,6 +23,13 @@
 #'
 #' You can find examples of Matlab functions that meet these requirements by running
 #' [create_emuRdemoData()] and then looking at the subdirectory `add_signal_scripts/matlab/`.
+#' It includes three examples: `demoSignalScalerForOneFile.m` and `demoSignalScalerForManyFiles.m`
+#' are there mostly to illustrate what the Matlab scripts must look like. They
+#' take the input audio files, multiply all samples with a given constant and write
+#' the result back to disk. The third example, `doPefacForEmu.m` is an actual
+#' real-world use case. It takes the input audio files, runs them through the PEFAC
+#' algorithm [1] and saves the result pitch estimation and
+#' probability of voicing. It relies on VOICEBOX [2] being installed on your system.
 #'
 #' The Matlab function can accept more parameters to influence the signal
 #' processing. These parameters need not be the same values for the entire
@@ -67,6 +74,11 @@
 #' called via [matlabr::run_matlab_code()].
 #'
 #' Matlab is a trademark of The MathWorks, Inc.
+#'
+#' [1] S. Gonzalez and M. Brookes. PEFAC - a pitch estimation algorithm robust to high levels of noise.
+#'     IEEE Trans. Audio, Speech, Language Processing, 22 (2): 518-530, Feb. 2014.
+#'     doi: 10.1109/TASLP.2013.2295918.
+#' [2] http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html
 #'
 #' @examples
 #' 
