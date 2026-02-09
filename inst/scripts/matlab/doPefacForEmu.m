@@ -36,7 +36,7 @@ function [] = doPefacForEmu(options)
 
     %%%%%%%%%%
     % Metadata that will be stored in the result file
-    functionName = 'doPefacForEmu: Version 2025-08-05';
+    functionName = 'doPefacForEmu: Version 2026-02-09';
 
 
     %%%%%%%%%%
