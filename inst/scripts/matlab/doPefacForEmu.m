@@ -76,12 +76,13 @@ function [] = doPefacForEmu(options)
     %         fv             structure containing feature vectors
     %                            fv.vuvfea(nframe,2) = voiced/unvoiced GMM features
     %
+    pefacmode = ''
     [fx,tx,pv,fv] = v_fxpefac(audioSignal, audioSampleRate, 1/options.outputSampleRate, pefacmode);
     %data = [fx pv];
     
     estimatedPitch = fx
     probabilityOfVoicing = pv
-    data = table(fx, pv)
+    data = probabilityOfVoicing
 
     sampleRate = options.outputSampleRate;
     startTime = tx(1);
@@ -89,7 +90,7 @@ function [] = doPefacForEmu(options)
 
     %maybe store parameters in private if ever used
     comment = ['v_fxpefac from VOICEBOX. Default mode and algorithm parameters' '\r\n' 'audio signal: ' 'audio' '\r\n'];
-    comment = ['<Comment functionName="' functionName '" executionTime="' datestr(now,0) '">' crlf comment '</Comment>' crlf];
+    comment = ['<Comment functionName="' functionName '" executionTime="' datestr(now,0) '">' comment '</Comment>'];
 
 
     %%%%%%%%%%
